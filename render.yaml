@@ -12,8 +12,8 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: DATABASE_PATH
-        value: /var/data/forum.sqlite
+        value: /var/data/forum.json
     disk:
       name: forum-data
       mountPath: /var/data
-      sizeGB: 1
+      sizeGB: 

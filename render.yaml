@@ -16,4 +16,4 @@ services:
     disk:
       name: forum-data
       mountPath: /var/data
-      sizeGB: 
+      sizeGB: 1

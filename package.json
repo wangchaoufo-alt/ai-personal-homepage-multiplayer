@@ -1,0 +1,28 @@
+{
+  "name": "ai-personal-homepage-multiplayer-forum",
+  "version": "1.0.0",
+  "description": "AI personal homepage with a real multi-user forum powered by Node.js, Express and SQLite.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "init-db": "node server.js --init-db"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.9.1",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -8,6 +8,7 @@
 
 - AI 科技感首页
 - AI 消息中心，每天自动拉取最新 AI RSS 消息并翻译成中文
+- LCZ 论坛精选聚合，展示公开版块、热门主题、最新讨论与原帖链接
 - 项目案例展示
 - 路线图模块
 - 响应式布局
@@ -33,6 +34,7 @@
 - 后端：Node.js + Express
 - 数据存储：JSON 文件
 - AI 消息源：RSS 自动更新，翻译成中文并缓存
+- 外部论坛精选：LCZ 公开 API 聚合并缓存
 - 登录：JWT
 - 密码加密：bcryptjs
 
@@ -135,6 +137,9 @@ NEWS_CACHE_PATH=/var/data/ai-news.json
 NEWS_REFRESH_INTERVAL_MS=86400000
 NEWS_TRANSLATION_ENABLED=true
 TRANSLATION_TIMEOUT_MS=12000
+LCZ_FORUM_CACHE_PATH=/var/data/lcz-forum.json
+LCZ_FORUM_REFRESH_INTERVAL_MS=3600000
+LCZ_FORUM_TIMEOUT_MS=12000
 ```
 
 健康检查地址：
@@ -182,7 +187,8 @@ ai_personal_homepage_multiplayer/
 │   └── assets/
 ├── data/
 │   ├── forum.json    启动后自动生成
-│   └── ai-news.json  AI 消息缓存，启动后自动生成
+│   ├── ai-news.json  AI 消息缓存，启动后自动生成
+│   └── lcz-forum.json  LCZ 论坛精选缓存，启动后自动生成
 ├── server.js
 ├── package.json
 ├── package-lock.json

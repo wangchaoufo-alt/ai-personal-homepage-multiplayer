@@ -21,6 +21,12 @@ services:
         value: "true"
       - key: TRANSLATION_TIMEOUT_MS
         value: "12000"
+      - key: LCZ_FORUM_CACHE_PATH
+        value: /var/data/lcz-forum.json
+      - key: LCZ_FORUM_REFRESH_INTERVAL_MS
+        value: "3600000"
+      - key: LCZ_FORUM_TIMEOUT_MS
+        value: "12000"
     disk:
       name: forum-data
       mountPath: /var/data

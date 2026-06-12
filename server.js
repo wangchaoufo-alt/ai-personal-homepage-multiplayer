@@ -24,6 +24,13 @@ const NEWS_CACHE_VERSION = 2;
 const NEWS_TRANSLATION_ENABLED = process.env.NEWS_TRANSLATION_ENABLED !== "false";
 const TRANSLATION_TIMEOUT_MS = Number(process.env.TRANSLATION_TIMEOUT_MS || 12000);
 const TRANSLATION_SPLIT_TOKEN = "AI_NEWS_TRANSLATION_SPLIT_927";
+const LCZ_FORUM_BASE_URL = process.env.LCZ_FORUM_BASE_URL || "https://lcz.me";
+const LCZ_FORUM_CACHE_PATH = process.env.LCZ_FORUM_CACHE_PATH || path.join(path.dirname(DATABASE_PATH), "lcz-forum.json");
+const configuredLczRefreshInterval = Number(process.env.LCZ_FORUM_REFRESH_INTERVAL_MS);
+const LCZ_FORUM_REFRESH_INTERVAL_MS = Number.isFinite(configuredLczRefreshInterval) && configuredLczRefreshInterval > 0
+  ? configuredLczRefreshInterval
+  : 60 * 60 * 1000;
+const LCZ_FORUM_TIMEOUT_MS = Number(process.env.LCZ_FORUM_TIMEOUT_MS || 12000);
 const allowedCategories = new Set(["AI消息", "本地部署", "显卡硬件", "AI视频", "工作流"]);
 const newsFeeds = [
   { source: "OpenAI", url: "https://openai.com/news/rss.xml", category: "大模型" },
@@ -242,6 +249,116 @@ async function translateNewsItemToChinese(item) {
   }
 }
 
+async function fetchLczJson(apiPath) {
+  const url = new URL(apiPath, LCZ_FORUM_BASE_URL);
+  const res = await fetchWithTimeout(url.toString(), {
+    headers: {
+      "User-Agent": "AIHomepageForumDigest/1.0 (+https://ai-personal-homepage-multiplayer.onrender.com)",
+      "Accept": "application/json"
+    }
+  }, LCZ_FORUM_TIMEOUT_MS);
+
+  if (!res.ok) {
+    throw new Error(`LCZ forum returned ${res.status}`);
+  }
+
+  return res.json();
+}
+
+function lczTopicUrl(topic) {
+  return new URL(`/topic/${topic.slug || topic.tid}`, LCZ_FORUM_BASE_URL).toString();
+}
+
+function lczCategoryUrl(category) {
+  return new URL(`/category/${category.slug || category.cid}`, LCZ_FORUM_BASE_URL).toString();
+}
+
+function normalizeLczCategory(category) {
+  return {
+    id: category.cid,
+    name: decodeHtmlEntities(stripHtml(category.name)),
+    description: summarizeText(category.description || category.descriptionParsed || "", 80),
+    topicCount: Number(category.topic_count || 0),
+    postCount: Number(category.post_count || 0),
+    color: category.bgColor || category.color || "#00d4ff",
+    url: lczCategoryUrl(category)
+  };
+}
+
+function normalizeLczTopic(topic) {
+  const teaser = topic.teaser?.content || topic.teaser?.contentRaw || topic.title || "";
+
+  return {
+    id: topic.tid,
+    title: summarizeText(topic.titleRaw || topic.title, 110),
+    summary: summarizeText(teaser, 92),
+    category: decodeHtmlEntities(stripHtml(topic.category?.name || "")),
+    replies: Math.max(Number(topic.postcount || 1) - 1, 0),
+    views: Number(topic.viewcount || 0),
+    date: formatDate(topic.timestampISO || topic.timestamp || new Date()),
+    url: lczTopicUrl(topic),
+    source: "LCZ论坛"
+  };
+}
+
+function readLczForumCache() {
+  return readJsonFile(LCZ_FORUM_CACHE_PATH, {
+    updatedAt: null,
+    sourceUrl: LCZ_FORUM_BASE_URL,
+    categories: [],
+    recentTopics: [],
+    popularTopics: []
+  });
+}
+
+async function refreshLczForumDigest() {
+  const [categoriesData, recentData, popularData] = await Promise.all([
+    fetchLczJson("/api/categories"),
+    fetchLczJson("/api/recent"),
+    fetchLczJson("/api/popular")
+  ]);
+
+  const categories = (categoriesData.categories || [])
+    .filter((category) => !category.disabled && !category.isSection && Number(category.topic_count || 0) > 0)
+    .slice(0, 8)
+    .map(normalizeLczCategory);
+
+  const recentTopics = (recentData.topics || [])
+    .filter((topic) => !topic.deleted && topic.slug)
+    .slice(0, 8)
+    .map(normalizeLczTopic);
+
+  const popularTopics = (popularData.topics || [])
+    .filter((topic) => !topic.deleted && topic.slug)
+    .slice(0, 8)
+    .map(normalizeLczTopic);
+
+  const cache = {
+    updatedAt: new Date().toISOString(),
+    sourceUrl: LCZ_FORUM_BASE_URL,
+    categories,
+    recentTopics,
+    popularTopics
+  };
+
+  writeJsonFile(LCZ_FORUM_CACHE_PATH, cache);
+  return cache;
+}
+
+function scheduleLczForumRefresh() {
+  refreshLczForumDigest().catch((error) => {
+    console.warn("Initial LCZ forum refresh failed:", error.message);
+  });
+
+  const timer = setInterval(() => {
+    refreshLczForumDigest().catch((error) => {
+      console.warn("Scheduled LCZ forum refresh failed:", error.message);
+    });
+  }, LCZ_FORUM_REFRESH_INTERVAL_MS);
+
+  if (typeof timer.unref === "function") timer.unref();
+}
+
 function detectNewsCategory(item, fallbackCategory) {
   const text = `${item.title || ""} ${item.contentSnippet || ""} ${item.content || ""}`.toLowerCase();
 
@@ -424,6 +541,7 @@ if (process.argv.includes("--init-db")) {
 }
 
 scheduleNewsRefresh();
+scheduleLczForumRefresh();
 
 function normalizeUsername(username) {
   return String(username || "").trim();
@@ -500,6 +618,26 @@ app.get("/api/news", async (req, res) => {
       news: fallback.items,
       updatedAt: fallback.updatedAt,
       sources: fallback.sources,
+      warning: error.message
+    });
+  }
+});
+
+app.get("/api/lcz-forum", async (req, res) => {
+  const cache = readLczForumCache();
+  const cachedAt = cache.updatedAt ? new Date(cache.updatedAt).getTime() : 0;
+  const stale = !cachedAt || Date.now() - cachedAt > LCZ_FORUM_REFRESH_INTERVAL_MS;
+
+  try {
+    const data = req.query.refresh === "1" || stale || !cache.recentTopics.length
+      ? await refreshLczForumDigest()
+      : cache;
+
+    res.json(data);
+  } catch (error) {
+    const fallback = readLczForumCache();
+    res.json({
+      ...fallback,
       warning: error.message
     });
   }

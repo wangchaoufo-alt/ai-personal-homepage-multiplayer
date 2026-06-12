@@ -339,6 +339,7 @@ a { color: inherit; text-decoration: none; }
 .insight-section::before { background-image: url('assets/about-brainchip.jpg'); }
 .news-section::before { background-image: url('assets/news-network.jpg'); }
 .lcz-section::before { background-image: url('assets/news-network.jpg'); }
+.game-section::before { background-image: url('assets/topics-datacenter.jpg'); }
 .projects-section::before { background-image: url('assets/topics-datacenter.jpg'); }
 .forum-section::before { background-image: url('assets/news-network.jpg'); }
 .roadmap-section::before { background-image: url('assets/page-ambient.jpg'); }
@@ -583,6 +584,85 @@ input {
   background: rgba(255,255,255,0.04);
 }
 
+.game-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(300px, 1.1fr);
+  gap: 24px;
+  align-items: center;
+  padding: 24px;
+  background:
+    linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(124, 92, 255, 0.08)),
+    rgba(10, 18, 33, 0.62);
+}
+
+.game-copy h3 {
+  margin: 14px 0 10px;
+  font-size: clamp(24px, 4vw, 38px);
+}
+
+.game-copy p {
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.game-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.game-preview {
+  min-height: 320px;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background:
+    radial-gradient(circle at center, rgba(227, 178, 91, 0.18), transparent 58%),
+    linear-gradient(145deg, rgba(16, 58, 46, 0.78), rgba(8, 16, 30, 0.72));
+}
+
+.mini-board {
+  width: min(100%, 360px);
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 6px;
+  padding: 8px;
+  border-radius: 18px;
+  background: rgba(5, 12, 22, 0.56);
+  box-shadow: inset 0 0 0 1px rgba(227, 178, 91, 0.32);
+}
+
+.mini-board span,
+.mini-board strong {
+  min-width: 0;
+  display: grid;
+  place-items: center;
+  padding: 8px;
+  border-radius: 12px;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.mini-board span {
+  color: #17231d;
+  background: #f4ead6;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.mini-board strong {
+  grid-column: 2 / 4;
+  grid-row: 2 / 4;
+  color: #f0c878;
+  background: radial-gradient(circle, rgba(42, 84, 70, 0.9), rgba(11, 34, 28, 0.9));
+  font-size: 30px;
+  letter-spacing: 0.16em;
+}
+
 .project-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -643,6 +723,7 @@ input {
   .footer-main,
   .featured-news,
   .insight-grid,
+  .game-feature,
   .lcz-grid,
   .project-grid,
   .timeline {
@@ -652,6 +733,7 @@ input {
   .hero { grid-template-columns: 1fr; }
   .insight-card.large { grid-row: auto; grid-column: span 2; }
   .featured-news { grid-template-columns: 1fr; }
+  .game-feature { grid-template-columns: 1fr; }
   .footer-main { grid-template-columns: 1fr; }
   .subscribe-card { justify-self: start; }
 }
@@ -664,11 +746,12 @@ input {
   }
 
   .lcz-section { order: 1; }
-  .insight-section { order: 2; }
-  .news-section { order: 3; }
-  .projects-section { order: 4; }
-  .forum-section { order: 5; }
-  .roadmap-section { order: 6; }
+  .game-section { order: 2; }
+  .insight-section { order: 3; }
+  .news-section { order: 4; }
+  .projects-section { order: 5; }
+  .forum-section { order: 6; }
+  .roadmap-section { order: 7; }
 
   .hero-shell { padding: 14px; }
   .navbar {
@@ -731,6 +814,7 @@ input {
   }
   .hero-metrics,
   .news-grid,
+  .game-feature,
   .lcz-grid,
   .project-grid,
   .timeline,
@@ -788,6 +872,21 @@ input {
   .lcz-category-list > :nth-child(n+5),
   .lcz-topic-list > :nth-child(n+5) {
     display: none;
+  }
+  .game-feature {
+    gap: 16px;
+    padding: 16px;
+    border-radius: 20px;
+  }
+  .game-preview {
+    min-height: 240px;
+    border-radius: 18px;
+  }
+  .mini-board {
+    width: min(100%, 280px);
+  }
+  .mini-board strong {
+    font-size: 23px;
   }
   input { min-width: 100%; width: 100%; }
 }

@@ -43,6 +43,9 @@ const userKey = "aiForumUser";
 
 const newsGrid = document.querySelector("#newsGrid");
 const searchInput = document.querySelector("#searchInput");
+const lczCategories = document.querySelector("#lczCategories");
+const lczPopularTopics = document.querySelector("#lczPopularTopics");
+const lczRecentTopics = document.querySelector("#lczRecentTopics");
 const chips = Array.from(document.querySelectorAll(".chip"));
 const menuBtn = document.querySelector("#menuBtn");
 const navLinks = document.querySelector("#navLinks");
@@ -119,6 +122,87 @@ async function loadLatestNews() {
   renderNews();
 }
 
+function renderLczCategories(categories = []) {
+  if (!lczCategories) return;
+
+  if (!categories.length) {
+    lczCategories.innerHTML = `<div class="lcz-empty">暂时没有读取到版块。</div>`;
+    return;
+  }
+
+  lczCategories.innerHTML = categories.map((category) => {
+    const url = safeNewsLink(category.url);
+    const color = escapeHTML(category.color || "#00d4ff");
+    const name = escapeHTML(category.name || "论坛版块");
+    const description = escapeHTML(category.description || "公开论坛版块");
+
+    return `
+      <a class="lcz-category" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">
+        <span class="lcz-dot" style="background:${color}"></span>
+        <span>
+          <strong>${name}</strong>
+          <small>${description}</small>
+        </span>
+        <em>${Number(category.topicCount || 0)} 主题</em>
+      </a>
+    `;
+  }).join("");
+}
+
+function renderLczTopics(container, topics = []) {
+  if (!container) return;
+
+  if (!topics.length) {
+    container.innerHTML = `<div class="lcz-empty">暂时没有读取到主题。</div>`;
+    return;
+  }
+
+  container.innerHTML = topics.map((topic) => {
+    const url = safeNewsLink(topic.url);
+    const title = escapeHTML(topic.title || "LCZ 论坛主题");
+    const summary = escapeHTML(topic.summary || "点击查看原帖详情。");
+    const category = escapeHTML(topic.category || "LCZ论坛");
+    const date = escapeHTML(topic.date || "");
+
+    return `
+      <a class="lcz-topic" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">
+        <span class="tag">${category}</span>
+        <h4>${title}</h4>
+        <p>${summary}</p>
+        <div class="lcz-meta">
+          <span>${date}</span>
+          <span>${Number(topic.replies || 0)} 回复</span>
+          <span>${Number(topic.views || 0)} 浏览</span>
+        </div>
+      </a>
+    `;
+  }).join("");
+}
+
+async function loadLczForumDigest() {
+  if (!lczCategories && !lczPopularTopics && !lczRecentTopics) return;
+
+  const loading = `<div class="lcz-empty">正在读取 LCZ 论坛公开内容...</div>`;
+  if (lczCategories) lczCategories.innerHTML = loading;
+  if (lczPopularTopics) lczPopularTopics.innerHTML = loading;
+  if (lczRecentTopics) lczRecentTopics.innerHTML = loading;
+
+  try {
+    const res = await fetch(`${API_BASE}/lcz-forum`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "LCZ 论坛读取失败");
+
+    renderLczCategories(data.categories || []);
+    renderLczTopics(lczPopularTopics, data.popularTopics || []);
+    renderLczTopics(lczRecentTopics, data.recentTopics || []);
+  } catch {
+    const error = `<div class="lcz-empty">LCZ 论坛暂时读取失败，稍后再试。</div>`;
+    if (lczCategories) lczCategories.innerHTML = error;
+    if (lczPopularTopics) lczPopularTopics.innerHTML = error;
+    if (lczRecentTopics) lczRecentTopics.innerHTML = error;
+  }
+}
+
 chips.forEach((chip) => {
   chip.addEventListener("click", () => {
     chips.forEach((c) => c.classList.remove("active"));
@@ -141,6 +225,7 @@ if (subscribeForm) {
 
 if (year) year.textContent = new Date().getFullYear();
 loadLatestNews();
+loadLczForumDigest();
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {

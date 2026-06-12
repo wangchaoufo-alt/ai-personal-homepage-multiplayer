@@ -327,6 +327,7 @@ a { color: inherit; text-decoration: none; }
 
 .insight-section::before { background-image: url('assets/about-brainchip.jpg'); }
 .news-section::before { background-image: url('assets/news-network.jpg'); }
+.lcz-section::before { background-image: url('assets/news-network.jpg'); }
 .projects-section::before { background-image: url('assets/topics-datacenter.jpg'); }
 .forum-section::before { background-image: url('assets/news-network.jpg'); }
 .roadmap-section::before { background-image: url('assets/page-ambient.jpg'); }
@@ -456,6 +457,121 @@ input {
 }
 .news-meta { margin-top: 18px; color: var(--muted); font-size: 14px; }
 
+.lcz-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.05fr 1.05fr;
+  gap: 18px;
+}
+
+.lcz-card {
+  padding: 22px;
+}
+
+.lcz-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.lcz-card-head h3 {
+  margin: 12px 0 0;
+}
+
+.source-link {
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 212, 255, 0.24);
+  color: #b8f4ff;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.source-link:hover {
+  background: rgba(0, 212, 255, 0.1);
+}
+
+.lcz-category-list,
+.lcz-topic-list {
+  display: grid;
+  gap: 12px;
+}
+
+.lcz-category,
+.lcz-topic {
+  display: block;
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.04);
+  transition: transform .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.lcz-category:hover,
+.lcz-topic:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 212, 255, 0.28);
+  background: rgba(0, 212, 255, 0.07);
+}
+
+.lcz-category {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.lcz-category strong,
+.lcz-category small {
+  display: block;
+}
+
+.lcz-category small,
+.lcz-topic p,
+.lcz-meta,
+.lcz-empty {
+  color: var(--muted);
+}
+
+.lcz-category em {
+  font-style: normal;
+  color: #b8f4ff;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.lcz-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  box-shadow: 0 0 18px rgba(0, 212, 255, 0.28);
+}
+
+.lcz-topic h4 {
+  margin: 12px 0 8px;
+  line-height: 1.35;
+}
+
+.lcz-topic p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.lcz-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  font-size: 12px;
+}
+
+.lcz-empty {
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.04);
+}
+
 .project-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -516,6 +632,7 @@ input {
   .footer-main,
   .featured-news,
   .insight-grid,
+  .lcz-grid,
   .project-grid,
   .timeline {
     grid-template-columns: 1fr 1fr;
@@ -548,6 +665,7 @@ input {
   .hero { margin-top: 56px; }
   .hero-metrics,
   .news-grid,
+  .lcz-grid,
   .project-grid,
   .timeline,
   .insight-grid,

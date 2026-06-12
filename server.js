@@ -7,6 +7,7 @@ const helmet = require("helmet");
 const cors = require("cors");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
+const Parser = require("rss-parser");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -14,7 +15,25 @@ const app = express();
 const PORT = Number(process.env.PORT || 3000);
 const JWT_SECRET = process.env.JWT_SECRET || "development_secret_change_me";
 const DATABASE_PATH = process.env.DATABASE_PATH || path.join(__dirname, "data", "forum.json");
+const NEWS_CACHE_PATH = process.env.NEWS_CACHE_PATH || path.join(path.dirname(DATABASE_PATH), "ai-news.json");
+const configuredNewsRefreshInterval = Number(process.env.NEWS_REFRESH_INTERVAL_MS);
+const NEWS_REFRESH_INTERVAL_MS = Number.isFinite(configuredNewsRefreshInterval) && configuredNewsRefreshInterval > 0
+  ? configuredNewsRefreshInterval
+  : 24 * 60 * 60 * 1000;
 const allowedCategories = new Set(["AI消息", "本地部署", "显卡硬件", "AI视频", "工作流"]);
+const newsFeeds = [
+  { source: "OpenAI", url: "https://openai.com/news/rss.xml", category: "大模型" },
+  { source: "MIT Technology Review", url: "https://www.technologyreview.com/topic/artificial-intelligence/feed/", category: "AI消息" },
+  { source: "TechCrunch AI", url: "https://techcrunch.com/category/artificial-intelligence/feed/", category: "AI消息" },
+  { source: "VentureBeat AI", url: "https://venturebeat.com/category/ai/feed/", category: "AI消息" },
+  { source: "AI News", url: "https://www.artificialintelligence-news.com/feed/", category: "AI消息" }
+];
+const rssParser = new Parser({
+  timeout: 10000,
+  headers: {
+    "User-Agent": "AIHomepageNewsBot/1.0 (+https://ai-personal-homepage-multiplayer.onrender.com)"
+  }
+});
 
 fs.mkdirSync(path.dirname(DATABASE_PATH), { recursive: true });
 
@@ -65,6 +84,133 @@ function saveState() {
 
 function formatDate(value) {
   return new Date(value).toISOString().slice(0, 10);
+}
+
+function readJsonFile(filePath, fallback) {
+  if (!fs.existsSync(filePath)) return fallback;
+
+  try {
+    return { ...fallback, ...JSON.parse(fs.readFileSync(filePath, "utf8")) };
+  } catch {
+    return fallback;
+  }
+}
+
+function writeJsonFile(filePath, value) {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  fs.writeFileSync(filePath, JSON.stringify(value, null, 2), "utf8");
+}
+
+function stripHtml(value) {
+  return String(value || "")
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/<style[\s\S]*?<\/style>/gi, "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function decodeHtmlEntities(value) {
+  return String(value || "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">");
+}
+
+function summarizeText(value, maxLength = 150) {
+  const text = decodeHtmlEntities(stripHtml(value));
+  return text.length > maxLength ? `${text.slice(0, maxLength).trim()}...` : text;
+}
+
+function detectNewsCategory(item, fallbackCategory) {
+  const text = `${item.title || ""} ${item.contentSnippet || ""} ${item.content || ""}`.toLowerCase();
+
+  if (/(video|sora|veo|runway|pika|film|视频|影像|生成视频)/i.test(text)) return "AI视频";
+  if (/(gpu|nvidia|cuda|chip|semiconductor|data center|datacenter|显卡|芯片|算力|数据中心)/i.test(text)) return "硬件";
+  if (/(agent|workflow|automation|coding|developer|copilot|codex|智能体|工作流|自动化|编程)/i.test(text)) return "工作流";
+  if (/(local|on-device|edge ai|open source|本地|端侧|开源)/i.test(text)) return "本地AI";
+  if (/(model|llm|gpt|claude|gemini|deepseek|llama|mistral|大模型|模型)/i.test(text)) return "大模型";
+
+  return fallbackCategory || "AI消息";
+}
+
+function readNewsCache() {
+  return readJsonFile(NEWS_CACHE_PATH, {
+    updatedAt: null,
+    items: [],
+    sources: newsFeeds.map((feed) => ({ source: feed.source, url: feed.url }))
+  });
+}
+
+function normalizeNewsItem(item, feed) {
+  const publishedAt = item.isoDate || item.pubDate || item.pubdate || new Date().toISOString();
+  const parsedDate = new Date(publishedAt);
+  const safeDate = Number.isNaN(parsedDate.getTime()) ? new Date() : parsedDate;
+  const summary = summarizeText(item.contentSnippet || item.summary || item.content || item.description || item.title);
+
+  return {
+    title: summarizeText(item.title, 120) || "AI 新闻更新",
+    category: detectNewsCategory(item, feed.category),
+    date: formatDate(safeDate),
+    summary,
+    source: feed.source,
+    link: item.link || item.guid || feed.url,
+    publishedAt: safeDate.toISOString()
+  };
+}
+
+async function refreshAiNews() {
+  const settledFeeds = await Promise.allSettled(newsFeeds.map(async (feed) => {
+    const parsed = await rssParser.parseURL(feed.url);
+    return (parsed.items || []).slice(0, 8).map((item) => normalizeNewsItem(item, feed));
+  }));
+
+  const items = [];
+  settledFeeds.forEach((result, index) => {
+    if (result.status === "fulfilled") {
+      items.push(...result.value);
+    } else {
+      console.warn(`AI news feed failed: ${newsFeeds[index].source}`, result.reason.message);
+    }
+  });
+
+  const seen = new Set();
+  const deduped = items
+    .filter((item) => {
+      const key = String(item.link || item.title).toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
+    .slice(0, 12);
+
+  if (deduped.length) {
+    writeJsonFile(NEWS_CACHE_PATH, {
+      updatedAt: new Date().toISOString(),
+      items: deduped,
+      sources: newsFeeds.map((feed) => ({ source: feed.source, url: feed.url }))
+    });
+  }
+
+  return readNewsCache();
+}
+
+function scheduleNewsRefresh() {
+  refreshAiNews().catch((error) => {
+    console.warn("Initial AI news refresh failed:", error.message);
+  });
+
+  const timer = setInterval(() => {
+    refreshAiNews().catch((error) => {
+      console.warn("Scheduled AI news refresh failed:", error.message);
+    });
+  }, NEWS_REFRESH_INTERVAL_MS);
+
+  if (typeof timer.unref === "function") timer.unref();
 }
 
 function seedData() {
@@ -153,6 +299,8 @@ if (process.argv.includes("--init-db")) {
   process.exit(0);
 }
 
+scheduleNewsRefresh();
+
 function normalizeUsername(username) {
   return String(username || "").trim();
 }
@@ -205,6 +353,32 @@ function optionalAuth(req, _res, next) {
 
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, service: "AI Forum API" });
+});
+
+app.get("/api/news", async (req, res) => {
+  const cache = readNewsCache();
+  const cachedAt = cache.updatedAt ? new Date(cache.updatedAt).getTime() : 0;
+  const stale = !cachedAt || Date.now() - cachedAt > NEWS_REFRESH_INTERVAL_MS;
+
+  try {
+    const data = req.query.refresh === "1" || stale || !cache.items.length
+      ? await refreshAiNews()
+      : cache;
+
+    res.json({
+      news: data.items,
+      updatedAt: data.updatedAt,
+      sources: data.sources
+    });
+  } catch (error) {
+    const fallback = readNewsCache();
+    res.json({
+      news: fallback.items,
+      updatedAt: fallback.updatedAt,
+      sources: fallback.sources,
+      warning: error.message
+    });
+  }
 });
 
 app.post("/api/auth/register", (req, res) => {

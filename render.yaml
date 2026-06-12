@@ -13,6 +13,10 @@ services:
         generateValue: true
       - key: DATABASE_PATH
         value: /var/data/forum.json
+      - key: NEWS_CACHE_PATH
+        value: /var/data/ai-news.json
+      - key: NEWS_REFRESH_INTERVAL_MS
+        value: "86400000"
     disk:
       name: forum-data
       mountPath: /var/data

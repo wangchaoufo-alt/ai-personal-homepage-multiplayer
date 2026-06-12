@@ -7,7 +7,7 @@
 前端主页：
 
 - AI 科技感首页
-- AI 消息中心
+- AI 消息中心，每天自动拉取最新 AI RSS 消息
 - 项目案例展示
 - 路线图模块
 - 响应式布局
@@ -24,14 +24,15 @@
 - 点赞 / 取消点赞
 - 评论
 - 只能删除自己发布的帖子
-- SQLite 数据库存储
+- JSON 文件存储
 - 多人访问共享同一套数据
 
 ## 技术栈
 
 - 前端：HTML + CSS + JavaScript
 - 后端：Node.js + Express
-- 数据库：SQLite
+- 数据存储：JSON 文件
+- AI 消息源：RSS 自动更新并缓存
 - 登录：JWT
 - 密码加密：bcryptjs
 
@@ -129,7 +130,9 @@ npm start
 ```text
 NODE_ENV=production
 JWT_SECRET=由平台自动生成或手动设置为长随机字符串
-DATABASE_PATH=/var/data/forum.sqlite
+DATABASE_PATH=/var/data/forum.json
+NEWS_CACHE_PATH=/var/data/ai-news.json
+NEWS_REFRESH_INTERVAL_MS=86400000
 ```
 
 健康检查地址：
@@ -147,7 +150,7 @@ docker build -t ai-homepage-forum .
 docker run -p 3000:3000 --env-file .env ai-homepage-forum
 ```
 
-如果需要持久化 SQLite 数据库，建议挂载数据目录：
+如果需要持久化论坛数据，建议挂载数据目录：
 
 ```bash
 docker run -p 3000:3000 --env-file .env -v ./data:/app/data ai-homepage-forum
@@ -176,9 +179,11 @@ ai_personal_homepage_multiplayer/
 │   ├── script.js
 │   └── assets/
 ├── data/
-│   └── forum.sqlite  启动后自动生成
+│   ├── forum.json    启动后自动生成
+│   └── ai-news.json  AI 消息缓存，启动后自动生成
 ├── server.js
 ├── package.json
+├── package-lock.json
 ├── .env.example
 └── README.md
 ```

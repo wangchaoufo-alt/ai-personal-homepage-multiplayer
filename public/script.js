@@ -213,7 +213,12 @@ chips.forEach((chip) => {
 });
 
 if (searchInput) searchInput.addEventListener("input", renderNews);
-if (menuBtn) menuBtn.addEventListener("click", () => navLinks.classList.toggle("show"));
+if (menuBtn && navLinks) {
+  menuBtn.addEventListener("click", () => navLinks.classList.toggle("show"));
+  navLinks.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => navLinks.classList.remove("show"));
+  });
+}
 
 if (subscribeForm) {
   subscribeForm.addEventListener("submit", (event) => {

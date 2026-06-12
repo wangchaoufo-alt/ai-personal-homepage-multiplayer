@@ -1,4 +1,4 @@
-const newsItems = [
+const fallbackNewsItems = [
   {
     title: "大模型正在从聊天助手走向完整生产系统",
     category: "大模型",
@@ -52,32 +52,71 @@ const formMsg = document.querySelector("#formMsg");
 const year = document.querySelector("#year");
 
 let activeCategory = "all";
+let newsItems = [...fallbackNewsItems];
 
 function renderNews() {
   if (!newsGrid) return;
-  const keyword = searchInput.value.trim().toLowerCase();
+  const keyword = (searchInput?.value || "").trim().toLowerCase();
 
   const filtered = newsItems.filter((item) => {
+    const titleText = String(item.title || "");
+    const summaryText = String(item.summary || "");
+    const categoryText = String(item.category || "");
+    const sourceText = String(item.source || "");
     const matchCategory = activeCategory === "all" || item.category === activeCategory;
     const matchKeyword =
-      item.title.toLowerCase().includes(keyword) ||
-      item.summary.toLowerCase().includes(keyword) ||
-      item.category.toLowerCase().includes(keyword);
+      titleText.toLowerCase().includes(keyword) ||
+      summaryText.toLowerCase().includes(keyword) ||
+      categoryText.toLowerCase().includes(keyword) ||
+      sourceText.toLowerCase().includes(keyword);
     return matchCategory && matchKeyword;
   });
 
-  newsGrid.innerHTML = filtered.map((item) => `
-    <article class="news-card">
-      <span class="tag">${item.category}</span>
-      <h3>${item.title}</h3>
-      <p>${item.summary}</p>
-      <div class="news-meta">${item.date} · AI观察</div>
-    </article>
-  `).join("");
+  newsGrid.innerHTML = filtered.map((item) => {
+    const title = escapeHTML(item.title || "AI 新闻更新");
+    const category = escapeHTML(item.category || "AI消息");
+    const summary = escapeHTML(item.summary || "最新 AI 动态正在更新中。");
+    const date = escapeHTML(item.date || "");
+    const source = escapeHTML(item.source || "AI观察");
+    const link = safeNewsLink(item.link);
+
+    return `
+      <article class="news-card">
+        <span class="tag">${category}</span>
+        <h3>${link ? `<a href="${escapeHTML(link)}" target="_blank" rel="noopener noreferrer">${title}</a>` : title}</h3>
+        <p>${summary}</p>
+        <div class="news-meta">${date} · ${source}</div>
+      </article>
+    `;
+  }).join("");
 
   if (!filtered.length) {
     newsGrid.innerHTML = `<article class="news-card"><h3>没有找到相关消息</h3><p>换个关键词或切换分类再试试看。</p></article>`;
   }
+}
+
+async function loadLatestNews() {
+  if (!newsGrid) return;
+
+  newsGrid.innerHTML = `
+    <article class="news-card">
+      <span class="tag">AI消息</span>
+      <h3>正在加载最新 AI 消息...</h3>
+      <p>主页会每天自动更新，稍等片刻。</p>
+    </article>
+  `;
+
+  try {
+    const res = await fetch(`${API_BASE}/news`);
+    const data = await res.json();
+    newsItems = res.ok && Array.isArray(data.news) && data.news.length
+      ? data.news
+      : [...fallbackNewsItems];
+  } catch {
+    newsItems = [...fallbackNewsItems];
+  }
+
+  renderNews();
 }
 
 chips.forEach((chip) => {
@@ -101,7 +140,7 @@ if (subscribeForm) {
 }
 
 if (year) year.textContent = new Date().getFullYear();
-renderNews();
+loadLatestNews();
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
@@ -206,6 +245,15 @@ function escapeHTML(str) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function safeNewsLink(link) {
+  try {
+    const url = new URL(link, window.location.origin);
+    return ["http:", "https:"].includes(url.protocol) ? url.href : "";
+  } catch {
+    return "";
+  }
 }
 
 async function renderForum() {

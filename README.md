@@ -9,6 +9,7 @@
 - AI 科技感首页
 - AI 消息中心，每天自动拉取最新 AI RSS 消息并翻译成中文
 - LCZ 论坛精选聚合，展示公开版块、热门主题、最新讨论与原帖链接
+- 联机大富翁小游戏入口，访问 `/dafuweng/` 可创建房间并邀请好友同屏游玩
 - 项目案例展示
 - 路线图模块
 - 响应式布局
@@ -35,6 +36,7 @@
 - 数据存储：JSON 文件
 - AI 消息源：RSS 自动更新，翻译成中文并缓存
 - 外部论坛精选：LCZ 公开 API 聚合并缓存
+- 联机游戏：Socket.IO WebSocket 实时同步
 - 登录：JWT
 - 密码加密：bcryptjs
 
@@ -184,12 +186,15 @@ ai_personal_homepage_multiplayer/
 │   ├── index.html
 │   ├── style.css
 │   ├── script.js
+│   ├── dafuweng/
+│   │   └── index.html  联机大富翁游戏页面
 │   └── assets/
 ├── data/
 │   ├── forum.json    启动后自动生成
 │   ├── ai-news.json  AI 消息缓存，启动后自动生成
 │   └── lcz-forum.json  LCZ 论坛精选缓存，启动后自动生成
 ├── server.js
+├── dafuweng-game.js  联机大富翁 Socket.IO 服务
 ├── package.json
 ├── package-lock.json
 ├── .env.example

@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const path = require("path");
 const fs = require("fs");
+const http = require("http");
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
@@ -10,6 +11,8 @@ const rateLimit = require("express-rate-limit");
 const Parser = require("rss-parser");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { Server } = require("socket.io");
+const { attachDafuwengGame } = require("./dafuweng-game");
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
@@ -804,6 +807,10 @@ app.get("*", (_req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.listen(PORT, "0.0.0.0", () => {
+const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: "*" } });
+attachDafuwengGame(io);
+
+server.listen(PORT, "0.0.0.0", () => {
   console.log(`AI homepage multiplayer forum running at http://localhost:${PORT}`);
 });

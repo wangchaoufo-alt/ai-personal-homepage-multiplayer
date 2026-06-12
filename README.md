@@ -7,7 +7,7 @@
 前端主页：
 
 - AI 科技感首页
-- AI 消息中心，每天自动拉取最新 AI RSS 消息
+- AI 消息中心，每天自动拉取最新 AI RSS 消息并翻译成中文
 - 项目案例展示
 - 路线图模块
 - 响应式布局
@@ -32,7 +32,7 @@
 - 前端：HTML + CSS + JavaScript
 - 后端：Node.js + Express
 - 数据存储：JSON 文件
-- AI 消息源：RSS 自动更新并缓存
+- AI 消息源：RSS 自动更新，翻译成中文并缓存
 - 登录：JWT
 - 密码加密：bcryptjs
 
@@ -133,6 +133,8 @@ JWT_SECRET=由平台自动生成或手动设置为长随机字符串
 DATABASE_PATH=/var/data/forum.json
 NEWS_CACHE_PATH=/var/data/ai-news.json
 NEWS_REFRESH_INTERVAL_MS=86400000
+NEWS_TRANSLATION_ENABLED=true
+TRANSLATION_TIMEOUT_MS=12000
 ```
 
 健康检查地址：

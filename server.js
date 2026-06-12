@@ -20,6 +20,10 @@ const configuredNewsRefreshInterval = Number(process.env.NEWS_REFRESH_INTERVAL_M
 const NEWS_REFRESH_INTERVAL_MS = Number.isFinite(configuredNewsRefreshInterval) && configuredNewsRefreshInterval > 0
   ? configuredNewsRefreshInterval
   : 24 * 60 * 60 * 1000;
+const NEWS_CACHE_VERSION = 2;
+const NEWS_TRANSLATION_ENABLED = process.env.NEWS_TRANSLATION_ENABLED !== "false";
+const TRANSLATION_TIMEOUT_MS = Number(process.env.TRANSLATION_TIMEOUT_MS || 12000);
+const TRANSLATION_SPLIT_TOKEN = "AI_NEWS_TRANSLATION_SPLIT_927";
 const allowedCategories = new Set(["AI消息", "本地部署", "显卡硬件", "AI视频", "工作流"]);
 const newsFeeds = [
   { source: "OpenAI", url: "https://openai.com/news/rss.xml", category: "大模型" },
@@ -125,6 +129,119 @@ function summarizeText(value, maxLength = 150) {
   return text.length > maxLength ? `${text.slice(0, maxLength).trim()}...` : text;
 }
 
+function hasChinese(value) {
+  return /[\u3400-\u9fff]/.test(String(value || ""));
+}
+
+async function fetchWithTimeout(url, options = {}, timeoutMs = 10000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    return await fetch(url, {
+      ...options,
+      signal: controller.signal
+    });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function cleanTranslatedText(value, fallback = "") {
+  const text = summarizeText(value, 260)
+    .replace(/^MYMEMORY WARNING:\s*/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return text || fallback;
+}
+
+async function translateTextToChinese(text) {
+  const cleanText = summarizeText(text, 460);
+  if (!NEWS_TRANSLATION_ENABLED || !cleanText || hasChinese(cleanText)) return cleanText;
+
+  const params = new URLSearchParams({
+    q: cleanText,
+    langpair: "en|zh-CN"
+  });
+
+  const res = await fetchWithTimeout(`https://api.mymemory.translated.net/get?${params.toString()}`, {
+    headers: {
+      "User-Agent": "AIHomepageNewsBot/1.0 (+https://ai-personal-homepage-multiplayer.onrender.com)",
+      "Accept": "application/json"
+    }
+  }, TRANSLATION_TIMEOUT_MS);
+
+  if (!res.ok) {
+    throw new Error(`Translation service returned ${res.status}`);
+  }
+
+  const data = await res.json();
+  return cleanTranslatedText(data.responseData?.translatedText, cleanText);
+}
+
+function splitTranslatedNewsText(value) {
+  const parts = String(value || "")
+    .split(/_*\s*AI_NEWS_TRANSLATION_SPLIT_927\s*_*/i)
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+  if (parts.length >= 2) {
+    return {
+      title: parts[0],
+      summary: parts.slice(1).join(" ")
+    };
+  }
+
+  const lines = String(value || "")
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  return {
+    title: lines[0] || value,
+    summary: lines.slice(1).join(" ")
+  };
+}
+
+async function translateNewsItemToChinese(item) {
+  if (!NEWS_TRANSLATION_ENABLED || hasChinese(`${item.title} ${item.summary}`)) {
+    return {
+      ...item,
+      language: "zh-CN",
+      translated: false
+    };
+  }
+
+  const originalTitle = item.title;
+  const originalSummary = item.summary;
+
+  try {
+    const combined = `${originalTitle}\n___${TRANSLATION_SPLIT_TOKEN}___\n${originalSummary}`;
+    const translated = await translateTextToChinese(combined);
+    const parts = splitTranslatedNewsText(translated);
+
+    return {
+      ...item,
+      title: cleanTranslatedText(parts.title, originalTitle),
+      summary: cleanTranslatedText(parts.summary, originalSummary),
+      originalTitle,
+      originalSummary,
+      language: "zh-CN",
+      translated: true
+    };
+  } catch (error) {
+    console.warn(`AI news translation failed: ${item.source}`, error.message);
+    return {
+      ...item,
+      originalTitle,
+      originalSummary,
+      language: "en",
+      translated: false
+    };
+  }
+}
+
 function detectNewsCategory(item, fallbackCategory) {
   const text = `${item.title || ""} ${item.contentSnippet || ""} ${item.content || ""}`.toLowerCase();
 
@@ -139,6 +256,7 @@ function detectNewsCategory(item, fallbackCategory) {
 
 function readNewsCache() {
   return readJsonFile(NEWS_CACHE_PATH, {
+    version: 0,
     updatedAt: null,
     items: [],
     sources: newsFeeds.map((feed) => ({ source: feed.source, url: feed.url }))
@@ -189,9 +307,15 @@ async function refreshAiNews() {
     .slice(0, 12);
 
   if (deduped.length) {
+    const translated = [];
+    for (const item of deduped) {
+      translated.push(await translateNewsItemToChinese(item));
+    }
+
     writeJsonFile(NEWS_CACHE_PATH, {
+      version: NEWS_CACHE_VERSION,
       updatedAt: new Date().toISOString(),
-      items: deduped,
+      items: translated,
       sources: newsFeeds.map((feed) => ({ source: feed.source, url: feed.url }))
     });
   }
@@ -358,7 +482,7 @@ app.get("/api/health", (_req, res) => {
 app.get("/api/news", async (req, res) => {
   const cache = readNewsCache();
   const cachedAt = cache.updatedAt ? new Date(cache.updatedAt).getTime() : 0;
-  const stale = !cachedAt || Date.now() - cachedAt > NEWS_REFRESH_INTERVAL_MS;
+  const stale = cache.version !== NEWS_CACHE_VERSION || !cachedAt || Date.now() - cachedAt > NEWS_REFRESH_INTERVAL_MS;
 
   try {
     const data = req.query.refresh === "1" || stale || !cache.items.length

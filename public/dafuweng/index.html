@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
@@ -54,21 +54,20 @@
   .board-outer{padding:10px;border-radius:22px;flex-shrink:0;
     background:linear-gradient(160deg,#5C3A1E,#3D2512);
     box-shadow:0 26px 60px rgba(0,0,0,.5), inset 0 0 0 2px rgba(227,178,91,.5)}
-  #board{position:relative;width:min(95vw,680px);height:min(95vw,680px);
-    display:grid;grid-template:repeat(9,1fr)/repeat(9,1fr);gap:2px;
-    background:var(--felt);border-radius:14px;padding:3px}
-  .tile{position:relative;border-radius:7px;overflow:hidden;display:flex;flex-direction:column;
-    justify-content:center;align-items:center;text-align:center;padding:3px 2px;
-    background:var(--cream);color:var(--ink);box-shadow:inset 0 0 0 1px rgba(120,90,40,.25)}
-  .tile.corner{background:linear-gradient(160deg,var(--lacquer),var(--lacquer-lo));color:var(--cream)}
-  .tile .bar{position:absolute;top:0;left:0;right:0;height:7px}
-  .tile .nm{font-weight:700;line-height:1.2;font-size:9px}
-  .tile.corner .nm{font-size:11px}
-  .tile .pr{font-size:8px;margin-top:1px;color:#8A6A3B;font-weight:700;letter-spacing:.3px}
-  #center{grid-row:2/9;grid-column:2/9;border-radius:12px;
-    background:radial-gradient(closest-side,var(--felt-in),#143229);
-    box-shadow:inset 0 0 0 1px rgba(227,178,91,.35), inset 0 0 50px rgba(0,0,0,.35);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;text-align:center}
+ #board{position:relative;width:min(95vw,680px);height:min(95vw,680px);
+    background:var(--felt);border-radius:14px;padding:3px;overflow:hidden}
+ .tile{position:relative;border-radius:7px;overflow:hidden;display:flex;flex-direction:column;
+    justify-content:center;align-items:center;text-align:center;padding:3px 2px;position:absolute;
+    background:var(--cream);color:var(--ink);box-shadow:inset 0 0 0 1px rgba(120,90,40,.25);width:clamp(36px,9.5%,64px);height:clamp(36px,9.5%,64px);transform:translate(-50%,-50%);}
+ .tile.corner{background:linear-gradient(160deg,var(--lacquer),var(--lacquer-lo));color:var(--cream)}
+ .tile .bar{position:absolute;top:0;left:0;right:0;height:7px}
+ .tile .nm{font-weight:700;line-height:1.2;font-size:9px}
+ .tile.corner .nm{font-size:11px}
+ .tile .pr{font-size:8px;margin-top:1px;color:#8A6A3B;font-weight:700;letter-spacing:.3px}
+  #center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:clamp(160px,55%,300px);height:clamp(160px,55%,300px);border-radius:16px;
+   background:radial-gradient(closest-side,var(--felt-in),#143229);
+   box-shadow:inset 0 0 0 1px rgba(227,178,91,.35), inset 0 0 50px rgba(0,0,0,.35);
+   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;text-align:center}
   #center .title{font-size:clamp(34px,7vw,52px);letter-spacing:10px;color:var(--gold);text-shadow:0 3px 14px rgba(227,178,91,.4)}
   #center .sub{font-size:12px;letter-spacing:8px;color:var(--mist);margin-top:-4px}
   #diceRow{display:flex;gap:14px;margin:10px 0 2px}
@@ -101,6 +100,8 @@
   .chatrow{display:flex;gap:8px}
   .chatrow input{flex:1;padding:9px 14px;font-size:13px}
   .chatrow button{padding:9px 16px;font-size:13px}
+  .btn-exit{background:rgba(200,60,60,.15);border:1px solid rgba(200,60,60,.35);color:#E8A0A0;border-radius:99px;padding:3px 9px;font-size:11px}
+  .btn-rule{background:rgba(227,178,91,.15);border:1px solid rgba(227,178,91,.4);color:var(--gold);border-radius:99px;padding:3px 9px;font-size:11px}
 
   /* ---- 弹窗 / 提示 ---- */
   #mask{position:fixed;inset:0;background:rgba(5,15,12,.65);display:none;align-items:center;
@@ -116,6 +117,14 @@
   #toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);z-index:60;display:none;
     background:linear-gradient(160deg,var(--gold-hi),var(--gold-lo));color:#4A2E08;font-weight:700;
     padding:12px 22px;border-radius:99px;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.4);max-width:86vw}
+  #rulesMask{position:fixed;inset:0;background:rgba(5,15,12,.7);display:none;align-items:center;justify-content:center;z-index:55;backdrop-filter:blur(4px)}
+  #rulesBox{width:min(88vw,400px);max-height:80vh;overflow-y:auto;background:linear-gradient(170deg,#FBF4E4,#EFE3CB);border-radius:18px;padding:22px 20px;color:var(--ink);box-shadow:0 30px 70px rgba(0,0,0,.5)}
+  #rulesBox h2{margin:0 0 4px;font-size:22px;font-weight:700;letter-spacing:2px;text-align:center}
+  #rulesBox .sub{font-size:12px;color:#7A6A50;text-align:center;margin-bottom:12px}
+  #rulesBox .sec{margin:8px 0;padding:8px 10px;background:rgba(255,255,255,.45);border-radius:10px}
+  #rulesBox .sec b{display:block;font-size:13px;color:#5C4B33;margin-bottom:3px}
+  #rulesBox .sec p{margin:0;font-size:12.5px;line-height:1.7;color:#4A3B28}
+  #rulesBox .close{display:block;margin:14px auto 4px;padding:8px 24px;background:var(--gold-lo);color:#4A2E08;font-weight:700;border:none;border-radius:99px;font-size:14px;cursor:pointer}
   #net{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:70;display:none;
     background:#7E1F22;color:#FBE9E9;font-size:12.5px;padding:7px 18px;border-radius:99px}
 
@@ -159,7 +168,7 @@
     <div class="side">
       <div class="side-head">
         <span class="kai" style="font-size:20px;color:var(--gold)">房间 <span id="roomCode"></span></span>
-        <button id="musicBtn" onclick="toggleMusic()">🔇 音乐关</button>
+        <button class="btn-rule" onclick="showRules()">📖 规则</button><button id="musicBtn" onclick="toggleMusic()">🔇 音乐关</button><button class="btn-exit" onclick="exitRoom()">✕ 退出</button>
       </div>
       <div id="players"></div>
       <button id="forceBtn" class="btn-ghost" style="display:none" onclick="emitForce()">⚠️ 跳过当前玩家(防掉线卡住)</button>
@@ -171,6 +180,18 @@
     </div>
   </div>
 </div>
+
+<!-- 规则弹窗 -->
+<div id="rulesMask"><div id="rulesBox">
+  <h2 class="kai">游戏规则</h2>
+  <div class="sub">大富翁 · 财源滚滚</div>
+  <div class="sec"><b>🎯 目标</b><p>通过买卖地产、收取租金积累财富，让对手破产即可获胜！</p></div>
+  <div class="sec"><b>🎲 操作</b><p>轮到你时点击「掷骰子」，按点数前进。走到未购买的地产可以买下，走到自己的地产可以升级（最高4级）。</p></div>
+  <div class="sec"><b>💰 经济</b><p>起点经过可领 ¥2,000。每次升级地产租金大幅提升。走到别人地产需支付租金。</p></div>
+  <div class="sec"><b>🎴 特殊格</b><p>「运气」随机获得奖金或罚款。「监狱」停顿一回合。「机场」直接飞到起点领钱。「意外支出/税务局」扣款。</p></div>
+  <div class="sec"><b>🏆 胜负</b><p>当一方资金为负时即破产出局，名下地产全部释放。最后存活者为胜。</p></div>
+  <button class="close" onclick="closeRules()">知道了</button>
+</div></div>
 
 <!-- 买地/升级弹窗 -->
 <div id="mask"><div id="modal">
@@ -207,11 +228,13 @@ const EMO = {go:"🚩",jail:"🚔",park:"🅿️",airport:"✈️",chance:"🎴"
 const ICONS = ["🪙","🏮","🐉","🧧"];
 const PCOLORS = ["#E3B25B","#D96A4A","#5FA8A0","#B86FA8"];
 const fmt = n => "¥" + n.toLocaleString("zh-CN");
-function idxToRC(i){
-  if(i===0)return[8,8]; if(i<=7)return[8,8-i]; if(i===8)return[8,0];
-  if(i<=15)return[8-(i-8),0]; if(i===16)return[0,0]; if(i<=23)return[0,i-16];
-  if(i===24)return[0,8]; return[i-24,8];
-}
+const PATH_POINTS = [
+  [92,86],[80,86],[68,84],[56,82],[44,82],[32,84],[20,86],[8,86],
+  [11,76],[14,66],[16,56],[17,46],[16,36],[14,26],[11,16],[8,14],
+  [20,14],[32,16],[44,18],[56,20],[68,18],[80,16],[90,14],[92,14],
+  [91,24],[89,34],[86,44],[84,54],[86,64],[89,74],[91,84],[92,78],
+];
+function tilePoint(i){return PATH_POINTS[i%PATH_POINTS.length];}
 
 /* ================= 音频 ================= */
 let AC=null, master=null, bgmTimer=null, bgmStep=0, bgmNext=0;
@@ -266,10 +289,10 @@ const board=$("board"), musicBtn=$("musicBtn");
 const tileEls=[];
 (function(){
   for(let i=0;i<32;i++){
-    const t=TILES[i],[r,c]=idxToRC(i);
+    const t=TILES[i],[x,y]=tilePoint(i);
     const d=document.createElement("div");
     d.className="tile"+(["go","jail","park","airport"].includes(t.t)?" corner":"");
-    d.style.gridRow=r+1; d.style.gridColumn=c+1;
+    d.style.left=x+"%"; d.style.top=y+"%";
     d.innerHTML=(t.t==="prop"?`<div class="bar" style="background:${t.g}"></div>`:"")+
       `<div class="nm kai">${EMO[t.t]||""}${t.n}</div>`+
       (t.t==="prop"?`<div class="pr" data-pr>${fmt(t.p)}</div>`:t.t==="tax"?`<div class="pr">${fmt(t.amt)}</div>`:"");
@@ -282,6 +305,19 @@ const tileEls=[];
   board.appendChild(c);
   renderDice(1,1,false);
 })();
+
+
+/* ---- 游戏规则 / 退出 ---- */
+const rulesData = ``;
+function showRules(){document.getElementById("rulesMask").style.display="flex";}
+function closeRules(){document.getElementById("rulesMask").style.display="none";}
+function exitRoom(){
+  if(confirm("确定退出当前房间？")){
+    socket.disconnect();
+    localStorage.removeItem("dfw");
+    location.reload();
+  }
+}
 
 function dieHTML(n){
   const dots={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]}[n];
@@ -298,9 +334,9 @@ function renderDice(a,b,shaking){
 /* ---- 棋子 ---- */
 const tokenEls={};
 function tokenPos(el,pos,idx){
-  const[r,c]=idxToRC(pos);
-  el.style.left=`calc(${(c+0.5)/9*100}% + ${(idx%2)*16-8}px)`;
-  el.style.top=`calc(${(r+0.5)/9*100}% + ${idx>1?14:-6}px)`;
+  const[x,y]=tilePoint(pos);
+  el.style.left=`calc(${x}% + ${(idx%2)*14-7}px)`;
+  el.style.top=`calc(${y}% + ${idx>1?12:-5}px)`;
 }
 function syncTokens(){
   if(!ST)return;
@@ -493,3 +529,7 @@ function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 </script>
 </body>
 </html>
+  .btn-exit{background:rgba(200,60,60,.2);border:1px solid rgba(200,60,60,.4);color:#E8A0A0;
+    border-radius:99px;padding:4px 10px;font-size:11px}
+  .btn-rule{background:rgba(227,178,91,.15);border:1px solid rgba(227,178,91,.4);color:var(--gold);
+    border-radius:99px;padding:4px 10px;font-size:11px}

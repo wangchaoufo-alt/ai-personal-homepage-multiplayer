@@ -1,0 +1,258 @@
+{
+  "updatedAt": "2026-06-13T08:45:33.689Z",
+  "sourceUrl": "https://lcz.me",
+  "categories": [
+    {
+      "id": 1,
+      "name": "站点公告",
+      "description": "站点信息公告",
+      "topicCount": 15,
+      "postCount": 146,
+      "color": "#fda34b",
+      "url": "https://lcz.me/category/1/%E7%AB%99%E7%82%B9%E5%85%AC%E5%91%8A"
+    },
+    {
+      "id": 2,
+      "name": "随便聊聊",
+      "description": "随便聊聊",
+      "topicCount": 84,
+      "postCount": 843,
+      "color": "#59b3d0",
+      "url": "https://lcz.me/category/2/%E9%9A%8F%E4%BE%BF%E8%81%8A%E8%81%8A"
+    },
+    {
+      "id": 6,
+      "name": "AI硬件",
+      "description": "显卡，主板，CPU，内存，SSD，小主机，服务器等AI硬件～",
+      "topicCount": 152,
+      "postCount": 2614,
+      "color": "#0d76d9",
+      "url": "https://lcz.me/category/6/ai%E7%A1%AC%E4%BB%B6"
+    },
+    {
+      "id": 7,
+      "name": "LLM讨论区",
+      "description": "本地，云端AI大模型性能，部署方案，性价比",
+      "topicCount": 115,
+      "postCount": 1347,
+      "color": "#BA8BAF",
+      "url": "https://lcz.me/category/7/llm%E8%AE%A8%E8%AE%BA%E5%8C%BA"
+    },
+    {
+      "id": 8,
+      "name": "AI音视频画图",
+      "description": "AI音视频，画图，ComfyUI，TTS，LTX，Wan，Seedance，Kling等。",
+      "topicCount": 50,
+      "postCount": 548,
+      "color": "#a700bd",
+      "url": "https://lcz.me/category/8/ai%E9%9F%B3%E8%A7%86%E9%A2%91%E7%94%BB%E5%9B%BE"
+    },
+    {
+      "id": 12,
+      "name": "AI Agent",
+      "description": "Hermes, OpenClaw, Codex, CluadeCode,TRAE, Cursor, OpenCode等",
+      "topicCount": 55,
+      "postCount": 675,
+      "color": "#19c2a0",
+      "url": "https://lcz.me/category/12/ai-agent"
+    },
+    {
+      "id": 9,
+      "name": "自媒体",
+      "description": "油管，B站，Tiktok，X，Instagram，Facebook等自媒体运维经验。",
+      "topicCount": 10,
+      "postCount": 96,
+      "color": "#e11428",
+      "url": "https://lcz.me/category/9/%E8%87%AA%E5%AA%92%E4%BD%93"
+    },
+    {
+      "id": 13,
+      "name": "AI进阶话题",
+      "description": "RAG&#x2F;Lora微调等话题。",
+      "topicCount": 7,
+      "postCount": 75,
+      "color": "#1f8931",
+      "url": "https://lcz.me/category/13/ai%E8%BF%9B%E9%98%B6%E8%AF%9D%E9%A2%98"
+    }
+  ],
+  "recentTopics": [
+    {
+      "id": 540,
+      "title": "📡 AI日报 6/13 | Anthropic发布Claude Fable 5、Microsoft自研模型减少OpenAI依赖、SWE-bench最新排名",
+      "summary": "fable5今天被美国政府全网停了，实在搞笑",
+      "category": "资讯",
+      "replies": 1,
+      "views": 19,
+      "date": "2026-06-12",
+      "url": "https://lcz.me/topic/540/ai%E6%97%A5%E6%8A%A5-6-13-anthropic%E5%8F%91%E5%B8%83claude-fable-5-microsoft%E8%87%AA%E7%A0%94%E6%A8%A1%E5%9E%8B%E5%87%8F%E5%B0%91openai%E4%BE%9D%E8%B5%96-swe-bench%E6%9C%80%E6%96%B0%E6%8E%92%E5%90%8D",
+      "source": "LCZ论坛"
+    },
+    {
+      "id": 527,
+      "title": "RTX 5070Ti 16GB 顯卡挖礦2.0 ～ 小小鏟子 挖呀挖呀挖",
+      "summary": "大佬，这个机架是给几卡的主板用的？关键词是啥呢？我今天看了一上午，都没找到（6卡 直插 63mm槽距） 的这种矿机架子",
+      "category": "AI硬件",
+      "replies": 6,
+      "views": 110,
+      "date": "2026-06-11",
+      "url": "https://lcz.me/topic/527/rtx-5070ti-16gb-%E9%A1%AF%E5%8D%A1%E6%8C%96%E7%A4%A62.0-%E5%B0%8F%E5%B0%8F%E9%8F%9F%E5%AD%90-%E6%8C%96%E5%91%80%E6%8C%96%E5%91%80%E6%8C%96",
+      "source": "LCZ论坛"
+    },
+    {
+      "id": 547,
+      "title": "5080+RTX PRO 4000的可行性?",
+      "summary": "@daion1509 这样的工作流毫无意义，你不需要，特别无聊切蛋疼，你需要一张32G，最少时24G显存的显卡跑AI，其它的都是瞎几把折腾。",
+      "category": "AI硬件",
+      "replies": 4,
+      "views": 7,
+      "date": "2026-06-13",
+      "url": "https://lcz.me/topic/547/5080-rtx-pro-4000%E7%9A%84%E5%8F%AF%E8%A1%8C%E6%80%A7",
+      "source": "LCZ论坛"
+    },
+    {
+      "id": 528,
+      "title": "被抡锤者种草后，我用 X99 + 4090D 48G 搭了一台本地 LLM 服务器",
+      "summary": "@williamlouis 说: @applejuice 找个你本地的能干的工作室给你搞。换显存 自己搞什么？不过升级意义很大。变32G就是神器一件了。 这卡我还想留着打游戏呢，哈哈。...",
+      "category": "AI硬件",
+      "replies": 22,
+      "views": 272,
+      "date": "2026-06-11",
+      "url": "https://lcz.me/topic/528/%E8%A2%AB%E6%8A%A1%E9%94%A4%E8%80%85%E7%A7%8D%E8%8D%89%E5%90%8E-%E6%88%91%E7%94%A8-x99-4090d-48g-%E6%90%AD%E4%BA%86%E4%B8%80%E5%8F%B0%E6%9C%AC%E5%9C%B0-llm-%E6%9C%8D%E5%8A%A1%E5%99%A8",
+      "source": "LCZ论坛"
+    },
+    {
+      "id": 502,
+      "title": "自研工作流,最新进展",
+      "summary": "我如果早2个星期看了你的贴子就好了。普通小白确实没有必要搞本地大模型。我脑子一热，投了6万，搞了太电脑，现在折腾好了，不知道跑什么，用他干什么？完全没有头绪。电脑天天还是看老特视频，其...",
+      "category": "LLM讨论区",
+      "replies": 7,
+      "views": 157,
+      "date": "2026-06-10",
+      "url": "https://lcz.me/topic/502/%E8%87%AA%E7%A0%94%E5%B7%A5%E4%BD%9C%E6%B5%81-%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95",
+      "source": "LCZ论坛"
+    },
+    {
+      "id": 534,
+      "title": "7900xtx 电源配850w 还是1000w 比较好呢？",
+      "summary": "@Q-maria 目前还是裸平台，因为我用的是x99的矿板，带6条pcie插槽，槽间距63mm，也就是3卡，后续我是计划上开放式机架。但是还没决定是自制还是买成品",
+      "category": "AI硬件",
+      "replies": 18,
+      "views": 105,
+      "date": "2026-06-12",
+      "url": "https://lcz.me/topic/534/7900xtx-%E7%94%B5%E6%BA%90%E9%85%8D850w-%E8%BF%98%E6%98%AF1000w-%E6%AF%94%E8%BE%83%E5%A5%BD%E5%91%A2",
+      "source": "LCZ论坛"
+    },
+    {
+      "id": 479,
+      "title": "技嘉Z890主板 256G DDR5内存 两张Pro6000 96G 跑cpp Qwen3.6 27B BF16与同时双ComfyUI工作流长视频之运行",
+      "summary": "羡慕!羡慕！我要是敢开口说买两张这卡，估计老婆连夜把门锁都换了。",
+      "category": "AI硬件",
+      "replies": 104,
+      "views": 618,
+      "date": "2026-06-08",
+      "url": "https://lcz.me/topic/479/%E6%8A%80%E5%98%89z890%E4%B8%BB%E6%9D%BF-256g-ddr5%E5%86%85%E5%AD%98-%E4%B8%A4%E5%BC%A0pro6000-96g-%E8%B7%91cpp-qwen3.6-27b-bf16%E4%B8%8E%E5%90%8C%E6%97%B6%E5%8F%8Ccomfyui%E5%B7%A5%E4%BD%9C%E6%B5%81%E9%95%BF%E8%A7%86%E9%A2%91%E4%B9%8B%E8%BF%90%E8%A1%8C",
+      "source": "LCZ论坛"
+    },
+    {
+      "id": 542,
+      "title": "RTX 5070 Ti 本地部署 Qwen3 35B-A3B (MoE) vs 27B (Dense) 对比报告",
+      "summary": "我看新闻说今年就有望流出 5系的 显存。战未来也用不了太久。",
+      "category": "LLM讨论区",
+      "replies": 7,
+      "views": 45,
+      "date": "2026-06-13",
+      "url": "https://lcz.me/topic/542/rtx-5070-ti-%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2-qwen3-35b-a3b-moe-vs-27b-dense-%E5%AF%B9%E6%AF%94%E6%8A%A5%E5%91%8A",
+      "source": "LCZ论坛"
+    }
+  ],
+  "popularTopics": [
+    {
+      "id": 479,
+      "title": "技嘉Z890主板 256G DDR5内存 两张Pro6000 96G 跑cpp Qwen3.6 27B BF16与同时双ComfyUI工作流长视频之运行",
+      "summary": "羡慕!羡慕！我要是敢开口说买两张这卡，估计老婆连夜把门锁都换了。",
+      "category": "AI硬件",
+      "replies": 104,
+      "views": 618,
+      "date": "2026-06-08",
+      "url": "https://lcz.me/topic/479/%E6%8A%80%E5%98%89z890%E4%B8%BB%E6%9D%BF-256g-ddr5%E5%86%85%E5%AD%98-%E4%B8%A4%E5%BC%A0pro6000-96g-%E8%B7%91cpp-qwen3.6-27b-bf16%E4%B8%8E%E5%90%8C%E6%97%B6%E5%8F%8Ccomfyui%E5%B7%A5%E4%BD%9C%E6%B5%81%E9%95%BF%E8%A7%86%E9%A2%91%E4%B9%8B%E8%BF%90%E8%A1%8C",
+      "source": "LCZ论坛"
+    },
+    {
+      "id": 456,
+      "title": "請教大神 RTX PRO 4000 24G Blackwell 1萬RMB 4.8萬台幣值得入手嗎？",
+      "summary": "@applejuice 我原本就只打算兩張 R9700 32G+32G ，是發現還有少部分 cuda 需求就買了張堪用的便宜卡來玩 我工作是 mac為主，所以大部分使用的方案都是可以跨...",
+      "category": "AI硬件",
+      "replies": 76,
+      "views": 218,
+      "date": "2026-06-07",
+      "url": "https://lcz.me/topic/456/%E8%AB%8B%E6%95%99%E5%A4%A7%E7%A5%9E-rtx-pro-4000-24g-blackwell-1%E8%90%ACrmb-4.8%E8%90%AC%E5%8F%B0%E5%B9%A3%E5%80%BC%E5%BE%97%E5%85%A5%E6%89%8B%E5%97%8E",
+      "source": "LCZ论坛"
+    },
+    {
+      "id": 243,
+      "title": "RTX3080 20g,qwen3.6 27B 45-50T/S 35B多模态256K 110T/S",
+      "summary": "已经非常好了",
+      "category": "AI硬件",
+      "replies": 71,
+      "views": 1425,
+      "date": "2026-05-21",
+      "url": "https://lcz.me/topic/243/rtx3080-20g-qwen3.6-27b-45-50t-s-35b%E5%A4%9A%E6%A8%A1%E6%80%81256k-110t-s",
+      "source": "LCZ论坛"
+    },
+    {
+      "id": 259,
+      "title": "交作业：X99 CD3+E5 2666 +128G DDR3 + AMD AI Pro 9700，成功安装ubuntu，等不及跟大家分享。后续再更新",
+      "summary": "@stone-king 问题解决了吗？ 我碰见了一样的问题",
+      "category": "AI硬件",
+      "replies": 69,
+      "views": 2037,
+      "date": "2026-05-22",
+      "url": "https://lcz.me/topic/259/%E4%BA%A4%E4%BD%9C%E4%B8%9A-x99-cd3-e5-2666-128g-ddr3-amd-ai-pro-9700-%E6%88%90%E5%8A%9F%E5%AE%89%E8%A3%85ubuntu-%E7%AD%89%E4%B8%8D%E5%8F%8A%E8%B7%9F%E5%A4%A7%E5%AE%B6%E5%88%86%E4%BA%AB-%E5%90%8E%E7%BB%AD%E5%86%8D%E6%9B%B4%E6%96%B0",
+      "source": "LCZ论坛"
+    },
+    {
+      "id": 186,
+      "title": "关于INTEL 的B70 PRO。",
+      "summary": "@terry 好的，我把并发从6加到了16，明天看效果。看看它会不会爆掉，明天别的版块开新贴对比汇报吧。",
+      "category": "AI硬件",
+      "replies": 56,
+      "views": 646,
+      "date": "2026-05-17",
+      "url": "https://lcz.me/topic/186/%E5%85%B3%E4%BA%8Eintel-%E7%9A%84b70-pro",
+      "source": "LCZ论坛"
+    },
+    {
+      "id": 100,
+      "title": "7900XTX + llama.cpp Qwen3.6 27B TurboQuant + MTP 测试结果分享",
+      "summary": "@David-Zhang 有空讲下OpenCode体验如何，编程跑Agent，我最近想要折腾下，要是能抄作业最好。",
+      "category": "LLM讨论区",
+      "replies": 55,
+      "views": 3505,
+      "date": "2026-05-11",
+      "url": "https://lcz.me/topic/100/7900xtx-llama.cpp-qwen3.6-27b-turboquant-mtp-%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C%E5%88%86%E4%BA%AB",
+      "source": "LCZ论坛"
+    },
+    {
+      "id": 117,
+      "title": "小小秀一下我的AI RIG",
+      "summary": "6w可以搞两个dgx spark，感觉也不错",
+      "category": "AI硬件",
+      "replies": 51,
+      "views": 1087,
+      "date": "2026-05-12",
+      "url": "https://lcz.me/topic/117/%E5%B0%8F%E5%B0%8F%E7%A7%80%E4%B8%80%E4%B8%8B%E6%88%91%E7%9A%84ai-rig",
+      "source": "LCZ论坛"
+    },
+    {
+      "id": 431,
+      "title": "对 M5 MAX 跑本地大模型有点失望",
+      "summary": "@Tony-Wang 大佬，你躺着已经赚钱了，今天丽台的pro5000 48G 价格已经42299了",
+      "category": "AI硬件",
+      "replies": 48,
+      "views": 500,
+      "date": "2026-06-05",
+      "url": "https://lcz.me/topic/431/%E5%AF%B9-m5-max-%E8%B7%91%E6%9C%AC%E5%9C%B0%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9C%89%E7%82%B9%E5%A4%B1%E6%9C%9B",
+      "source": "LCZ论坛"
+    }
+  ]
+}

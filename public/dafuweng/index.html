@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
@@ -301,8 +301,6 @@ function tokenPos(el,pos,idx){
   const[r,c]=idxToRC(pos);
   el.style.left=`calc(${(c+0.5)/9*100}% + ${(idx%2)*16-8}px)`;
   el.style.top=`calc(${(r+0.5)/9*100}% + ${idx>1?14:-6}px)`;
-}% + ${(idx%2)*16-8}px)`;
-  el.style.top=`calc(${(r+0.5)/7*100}% + ${idx>1?14:-6}px)`;
 }
 function syncTokens(){
   if(!ST)return;
@@ -349,7 +347,7 @@ function render(){
       el.classList.remove("owned");
       el.style.borderLeft="";
     }
-  }
+  });
   // 玩家卡
   $("players").innerHTML=ST.players.map((p,i)=>{
     const props=Object.values(ST.owners).filter(o=>o.pid===p.id).length;
@@ -451,7 +449,7 @@ socket.on("teleport",({playerId,pos})=>{
   const pl=ST?ST.players:[];const idx=pl.findIndex(p=>p.id===playerId);
   const el=tokenEls[playerId];
   if(el){tokenPos(el,pos,idx);el.style.transition="left .15s ease, top .15s ease";}
-}
+});
 
 let askDeadline=0,askTicker=null;
 socket.on("ask",a=>{

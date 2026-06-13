@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
@@ -10,7 +10,7 @@
     --gold:#E3B25B; --gold-hi:#F0C878; --gold-lo:#D9A23F;
     --lacquer:#A62B2B; --lacquer-lo:#7E1F22;
     --cream:#F4EAD6; --ink:#3B2F22; --mist:#9FB8AD; --paper:#F2E8D5;
-  }
+  });
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
   body{
@@ -49,54 +49,81 @@
   #home .foot{margin-top:20px;font-size:11.5px;color:#8AA398;line-height:1.7}
 
   /* ---- 游戏布局 ---- */
-  #game{display:none;width:100%;max-width:1100px}
-  .wrap{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
-  .board-outer{padding:10px;border-radius:22px;flex-shrink:0;
-    background:linear-gradient(160deg,#5C3A1E,#3D2512);
-    box-shadow:0 26px 60px rgba(0,0,0,.5), inset 0 0 0 2px rgba(227,178,91,.5)}
-  #board{position:relative;width:min(95vw,680px);height:min(95vw,680px);
-    display:grid;grid-template:repeat(9,1fr)/repeat(9,1fr);gap:2px;
-    background:var(--felt);border-radius:14px;padding:3px}
-  .tile{position:relative;border-radius:7px;overflow:hidden;display:flex;flex-direction:column;
-    justify-content:center;align-items:center;text-align:center;padding:3px 2px;
-    background:var(--cream);color:var(--ink);box-shadow:inset 0 0 0 1px rgba(120,90,40,.25)}
-  .tile.corner{background:linear-gradient(160deg,var(--lacquer),var(--lacquer-lo));color:var(--cream)}
-  .tile .bar{position:absolute;top:0;left:0;right:0;height:7px}
-  .tile .nm{font-weight:700;line-height:1.2;font-size:9px}
-  .tile.corner .nm{font-size:11px}
-  .tile .pr{font-size:8px;margin-top:1px;color:#8A6A3B;font-weight:700;letter-spacing:.3px}
-  #center{grid-row:2/9;grid-column:2/9;border-radius:12px;
-    background:radial-gradient(closest-side,var(--felt-in),#143229);
-    box-shadow:inset 0 0 0 1px rgba(227,178,91,.35), inset 0 0 50px rgba(0,0,0,.35);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;text-align:center}
-  #center .title{font-size:clamp(34px,7vw,52px);letter-spacing:10px;color:var(--gold);text-shadow:0 3px 14px rgba(227,178,91,.4)}
-  #center .sub{font-size:12px;letter-spacing:8px;color:var(--mist);margin-top:-4px}
-  #diceRow{display:flex;gap:14px;margin:10px 0 2px}
-  .die{width:52px;height:52px;background:linear-gradient(150deg,#FFFDF6,#EFE6D0);border-radius:12px;
-    display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:8px;gap:2px;
-    box-shadow:0 6px 14px rgba(0,0,0,.4), inset 0 1px 0 #fff}
+  #game{display:none;width:100%;max-width:1180px}
+  .wrap{display:grid;grid-template-columns:minmax(0,760px) minmax(300px,360px);gap:18px;align-items:start;justify-content:center}
+  .board-outer{padding:12px;border-radius:34px;flex-shrink:0;
+    background:linear-gradient(180deg,#686d94,#4d526f);
+    border:4px solid rgba(20,23,42,.8);
+    box-shadow:0 26px 70px rgba(0,0,0,.45), inset 0 0 0 2px rgba(255,255,255,.08)}
+  #board{position:relative;width:min(96vw,740px);height:clamp(760px,132vw,980px);
+    display:block;overflow:hidden;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(255,255,255,.08), transparent 22%),
+      linear-gradient(180deg,#5d6389,#4e536f);
+    border-radius:26px;padding:0}
+  #board::before{content:"";position:absolute;inset:16px;border-radius:24px;
+    background:
+      linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px),
+      linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px);
+    background-size:64px 64px;opacity:.22;pointer-events:none}
+  .tile{position:absolute;left:0;top:0;width:clamp(56px,12.2%,92px);height:clamp(62px,8.8%,98px);
+    transform:translate(-50%,-50%) rotate(var(--tilt,0deg));
+    border-radius:24px 14px 24px 14px;overflow:hidden;display:flex;flex-direction:column;
+    justify-content:center;align-items:center;text-align:center;padding:9px 6px 7px;
+    background:linear-gradient(180deg,#fffef9,#f4ead6);color:var(--ink);
+    border:3px solid #111421;
+    box-shadow:0 8px 0 rgba(0,0,0,.28),0 12px 18px rgba(0,0,0,.22),inset 0 1px 0 #fff;z-index:2}
+  .tile:nth-child(3n){border-radius:14px 24px 14px 24px}
+  .tile:nth-child(4n){--tilt:-1.5deg}
+  .tile:nth-child(5n){--tilt:1.5deg}
+  .tile.corner{background:linear-gradient(160deg,#f7636a,#b42935);color:#fff5de}
+  .tile.chance{background:linear-gradient(160deg,#c58aff,#8e58e8);color:#fff}
+  .tile.tax{background:linear-gradient(160deg,#f4ead6,#ffd18a)}
+  .tile .bar{position:absolute;top:0;left:0;right:0;height:10px;background:var(--tile-color,var(--gold))}
+  .tile .nm{font-weight:900;line-height:1.08;font-size:clamp(11px,1.55vw,16px);text-shadow:0 1px 0 rgba(255,255,255,.45)}
+  .tile.corner .nm,.tile.chance .nm{font-size:clamp(13px,1.7vw,18px);text-shadow:0 2px 0 rgba(0,0,0,.22)}
+  .tile .pr{font-size:clamp(13px,1.8vw,19px);margin-top:4px;color:#111421;font-weight:950;letter-spacing:.2px}
+  .tile.chance .pr,.tile.corner .pr{color:#fff}
+  #center{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
+    width:clamp(210px,34%,280px);min-height:clamp(240px,35%,310px);border-radius:44px;
+    background:radial-gradient(circle at 50% 35%,#ff7e85,#d9434d 58%,#9d2230 59%,#671827 100%);
+    box-shadow:0 20px 38px rgba(0,0,0,.38),inset 0 0 0 9px rgba(255,117,125,.55),inset 0 0 0 15px rgba(0,0,0,.18);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:18px;text-align:center;z-index:1}
+  #center .title{font-size:clamp(26px,4.5vw,42px);letter-spacing:8px;color:#fff6df;text-shadow:0 3px 0 rgba(0,0,0,.28)}
+  #center .sub{font-size:12px;letter-spacing:6px;color:#ffe0af;margin-top:-4px}
+  #diceRow{display:flex;gap:12px;margin:8px 0 2px}
+  .die{width:clamp(58px,8vw,76px);height:clamp(58px,8vw,76px);background:linear-gradient(150deg,#FFFDF6,#E7E2D5);border-radius:18px;
+    display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:10px;gap:2px;
+    border:3px solid #151722;
+    box-shadow:0 10px 16px rgba(0,0,0,.36), inset 0 1px 0 #fff}
   .die i{border-radius:50%;margin:1px}
   #centerInfo{margin-top:8px;font-size:14px}
-  .token{position:absolute;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;
-    justify-content:center;font-size:17px;transform:translate(-50%,-50%);
-    transition:left .3s cubic-bezier(.4,0,.2,1), top .3s cubic-bezier(.4,0,.2,1);box-shadow:0 4px 10px rgba(0,0,0,.45);z-index:5}
+  .token{position:absolute;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
+    justify-content:center;font-size:20px;transform:translate(-50%,-50%);
+    border:3px solid #111421;
+    transition:left .3s cubic-bezier(.4,0,.2,1), top .3s cubic-bezier(.4,0,.2,1);box-shadow:0 5px 12px rgba(0,0,0,.5);z-index:5}
   .token.cur{outline:2px solid #FFF1C9;z-index:6}
 
   /* ---- 侧栏 ---- */
-  .side{width:min(94vw,340px);display:flex;flex-direction:column;gap:10px}
-  .side-head{display:flex;justify-content:space-between;align-items:center;padding:4px 2px}
-  #musicBtn{background:rgba(227,178,91,.15);border:1px solid rgba(227,178,91,.4);color:var(--gold);
-    border-radius:99px;padding:6px 14px;font-size:12.5px}
-  .pcard{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;
-    background:linear-gradient(170deg,rgba(255,250,238,.08),rgba(255,250,238,.02));
-    box-shadow:0 4px 12px rgba(0,0,0,.25)}
-  .pcard .ico{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    font-size:19px;flex-shrink:0;box-shadow:inset 0 -3px 6px rgba(0,0,0,.25)}
-  .pcard .nm{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .pcard .money{font-size:13px;color:var(--gold);font-variant-numeric:tabular-nums}
-  .pcard .props{font-size:11px;color:var(--mist)}
-  #log{flex:1;min-height:150px;max-height:260px;overflow-y:auto;border-radius:14px;padding:10px 12px;
-    background:rgba(0,0,0,.25);border:1px solid rgba(159,184,173,.2)}
+  .side{width:min(94vw,360px);display:flex;flex-direction:column;gap:12px;padding:14px;border-radius:30px;
+    background:linear-gradient(135deg,#ff6b73,#db4351 58%,#9b2633);
+    border:4px solid #14172a;
+    box-shadow:0 18px 40px rgba(0,0,0,.32),inset 0 0 0 2px rgba(255,255,255,.12)}
+  .side-head{display:flex;justify-content:space-between;align-items:center;padding:2px 4px;color:#fff}
+  #musicBtn{background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.3);color:#fff;
+    border-radius:99px;padding:8px 14px;font-size:12.5px;font-weight:800}
+  .pcard{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;padding:12px 14px;border-radius:22px;
+    background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.08));
+    border:2px solid rgba(255,255,255,.16);
+    box-shadow:0 8px 18px rgba(0,0,0,.22)}
+  .pcard .ico{width:48px;height:48px;border-radius:18px;display:flex;align-items:center;justify-content:center;
+    font-size:24px;flex-shrink:0;border:3px solid #151722;box-shadow:inset 0 -3px 6px rgba(0,0,0,.25)}
+  .pcard .nm{font-weight:900;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff}
+  .pcard .money{display:inline-flex;align-items:center;gap:4px;margin-top:4px;padding:4px 10px;border-radius:999px;
+    background:rgba(91,19,26,.45);font-size:15px;color:#fff7cb;font-weight:900;font-variant-numeric:tabular-nums}
+  .pcard .props{font-size:13px;color:#fff;border-radius:999px;background:rgba(91,19,26,.4);padding:6px 9px;font-weight:900}
+  #log{flex:1;min-height:150px;max-height:260px;overflow-y:auto;border-radius:20px;padding:10px 12px;
+    background:rgba(20,23,42,.55);border:2px solid rgba(255,255,255,.14)}
   #log div{font-size:12.5px;line-height:1.8;color:#D8CFBA;border-bottom:1px dashed rgba(159,184,173,.12)}
   .chatrow{display:flex;gap:8px}
   .chatrow input{flex:1;padding:9px 14px;font-size:13px}
@@ -127,6 +154,30 @@
   .pulse{animation:pulse 1.6s infinite}
   @keyframes toastIn{from{opacity:0;transform:translate(-50%,14px)}to{opacity:1;transform:translate(-50%,0)}}
   .toastIn{animation:toastIn .3s ease-out}
+  @media (max-width: 980px){
+    body{padding:10px}
+    .wrap{grid-template-columns:1fr;gap:12px}
+    .board-outer{padding:8px;border-radius:26px}
+    #board{width:min(100%,620px);height:min(148vw,860px);min-height:690px;margin:0 auto;border-radius:20px}
+    .side{width:min(100%,620px);margin:0 auto}
+  }
+  @media (max-width: 520px){
+    body{padding:6px;background:#4f5474}
+    #game{width:100%}
+    .board-outer{border-width:3px;padding:5px;border-radius:18px}
+    #board{width:100%;height:calc(100vh - 236px);min-height:620px;border-radius:15px}
+    .tile{width:clamp(48px,12.2%,62px);height:clamp(58px,8.8%,72px);border-width:2px;border-radius:18px 10px 18px 10px;padding:7px 4px 5px}
+    .tile .nm{font-size:11px}
+    .tile .pr{font-size:13px}
+    #center{width:180px;min-height:210px;border-radius:34px;padding:14px}
+    #center .title{font-size:25px;letter-spacing:5px}
+    .die{width:56px;height:56px;border-radius:15px;padding:9px}
+    .token{width:31px;height:31px;font-size:17px;border-width:2px}
+    .side{border-radius:22px;padding:10px}
+    .pcard{padding:10px;border-radius:18px}
+    .pcard .ico{width:42px;height:42px;border-radius:15px}
+    #log{max-height:130px;min-height:92px}
+  }
   @media (prefers-reduced-motion: reduce){.shake,.bob,.pulse,.toastIn{animation:none}}
 </style>
 </head>
@@ -207,10 +258,18 @@ const EMO = {go:"🚩",jail:"🚔",park:"🅿️",airport:"✈️",chance:"🎴"
 const ICONS = ["🪙","🏮","🐉","🧧"];
 const PCOLORS = ["#E3B25B","#D96A4A","#5FA8A0","#B86FA8"];
 const fmt = n => "¥" + n.toLocaleString("zh-CN");
-function idxToRC(i){
-  if(i===0)return[8,8]; if(i<=7)return[8,8-i]; if(i===8)return[8,0];
-  if(i<=15)return[8-(i-8),0]; if(i===16)return[0,0]; if(i<=23)return[0,i-16];
-  if(i===24)return[0,8]; return[i-24,8];
+const PATH_POINTS = [
+  [92,88],[78,88],[64,88],[50,88],[36,88],[22,88],[8,88],
+  [8,77],[8,66],[8,55],[8,44],[8,33],[8,22],
+  [22,22],[36,22],[50,22],
+  [50,33],[36,33],[22,33],
+  [22,44],[22,55],
+  [36,55],[50,55],[64,55],
+  [64,44],[64,33],
+  [78,22],[92,22],[92,33],[92,44],[92,55],[92,70]
+];
+function tilePoint(i){
+  return PATH_POINTS[i % PATH_POINTS.length];
 }
 
 /* ================= 音频 ================= */
@@ -265,11 +324,13 @@ const board=$("board"), musicBtn=$("musicBtn");
 /* ---- 建棋盘骨架(一次) ---- */
 const tileEls=[];
 (function(){
-  for(let i=0;i<32;i++){
-    const t=TILES[i],[r,c]=idxToRC(i);
+  for(let i=0;i<TILES.length;i++){
+    const t=TILES[i],[x,y]=tilePoint(i);
     const d=document.createElement("div");
-    d.className="tile"+(["go","jail","park","airport"].includes(t.t)?" corner":"");
-    d.style.gridRow=r+1; d.style.gridColumn=c+1;
+    d.className=`tile ${t.t}`+(["go","jail","park","airport"].includes(t.t)?" corner":"");
+    d.style.left=x+"%";
+    d.style.top=y+"%";
+    if(t.g)d.style.setProperty("--tile-color",t.g);
     d.innerHTML=(t.t==="prop"?`<div class="bar" style="background:${t.g}"></div>`:"")+
       `<div class="nm kai">${EMO[t.t]||""}${t.n}</div>`+
       (t.t==="prop"?`<div class="pr" data-pr>${fmt(t.p)}</div>`:t.t==="tax"?`<div class="pr">${fmt(t.amt)}</div>`:"");
@@ -298,9 +359,9 @@ function renderDice(a,b,shaking){
 /* ---- 棋子 ---- */
 const tokenEls={};
 function tokenPos(el,pos,idx){
-  const[r,c]=idxToRC(pos);
-  el.style.left=`calc(${(c+0.5)/9*100}% + ${(idx%2)*16-8}px)`;
-  el.style.top=`calc(${(r+0.5)/9*100}% + ${idx>1?14:-6}px)`;
+  const[x,y]=tilePoint(pos);
+  el.style.left=`calc(${x}% + ${(idx%2)*18-9}px)`;
+  el.style.top=`calc(${y}% + ${idx>1?16:-7}px)`;
 }
 function syncTokens(){
   if(!ST)return;

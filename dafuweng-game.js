@@ -319,7 +319,7 @@ io.on("connection", (socket) => {
 
     io.to("room:" + room.code).emit("dice", { playerId: p.id, d1, d2, path });
 
-    if (p.pos + steps >= 24) {
+    if (p.pos + steps >= TILES.length) {
       p.money += GO_BONUS;
       log(room, `💰 ${p.name} 经过起点,领取 ${fmt(GO_BONUS)}`);
     }

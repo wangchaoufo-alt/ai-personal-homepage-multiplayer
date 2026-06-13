@@ -8,29 +8,37 @@ function attachDafuwengGame(io) {
 /* ---------------- 游戏数据 ---------------- */
 const TILES = [
   { n: "起点", t: "go" },
-  { n: "老北京胡同", t: "prop", p: 1200, g: "#C8503C" },
+  { n: "老北京胡同", t: "prop", p: 600, g: "#C8503C" },
   { n: "运气", t: "chance" },
-  { n: "上海弄堂", t: "prop", p: 1400, g: "#C8503C" },
-  { n: "税务局", t: "tax", amt: 1500 },
-  { n: "广州骑楼", t: "prop", p: 1600, g: "#C8503C" },
+  { n: "上海外滩", t: "prop", p: 800, g: "#C8503C" },
+  { n: "广州塔", t: "prop", p: 1000, g: "#C8503C" },
+  { n: "意外支出", t: "tax", amt: 800 },
+  { n: "成都锦里", t: "prop", p: 1400, g: "#FF8C42" },
+  { n: "西安兵马俑", t: "prop", p: 1600, g: "#FF8C42" },
   { n: "监狱", t: "jail" },
-  { n: "成都茶馆", t: "prop", p: 2000, g: "#3D7EA6" },
+  { n: "重庆洪崖洞", t: "prop", p: 2000, g: "#FF8C42" },
+  { n: "杭州西湖", t: "prop", p: 2200, g: "#3D7EA6" },
   { n: "运气", t: "chance" },
-  { n: "重庆山城", t: "prop", p: 2200, g: "#3D7EA6" },
-  { n: "杭州西湖", t: "prop", p: 2400, g: "#3D7EA6" },
-  { n: "苏州园林", t: "prop", p: 2600, g: "#3D7EA6" },
+  { n: "苏州园林", t: "prop", p: 2400, g: "#3D7EA6" },
+  { n: "南京夫子庙", t: "prop", p: 2600, g: "#3D7EA6" },
+  { n: "长沙橘子洲", t: "prop", p: 2800, g: "#3D7EA6" },
+  { n: "武汉黄鹤楼", t: "prop", p: 3000, g: "#3D7EA6" },
   { n: "免费停车", t: "park" },
-  { n: "西安城墙", t: "prop", p: 2800, g: "#8E6CB8" },
+  { n: "厦门鼓浪屿", t: "prop", p: 3200, g: "#8E6CB8" },
+  { n: "青岛栈桥", t: "prop", p: 3400, g: "#8E6CB8" },
   { n: "运气", t: "chance" },
-  { n: "南京夫子庙", t: "prop", p: 3000, g: "#8E6CB8" },
-  { n: "青岛海岸", t: "prop", p: 3200, g: "#8E6CB8" },
-  { n: "厦门鼓浪屿", t: "prop", p: 3400, g: "#8E6CB8" },
-  { n: "国际机场", t: "airport" },
-  { n: "深圳科技园", t: "prop", p: 4000, g: "#2E8B63" },
-  { n: "税务局", t: "tax", amt: 2000 },
+  { n: "深圳科技园", t: "prop", p: 4000, g: "#8E6CB8" },
   { n: "香港中环", t: "prop", p: 5000, g: "#2E8B63" },
+  { n: "澳门大三巴", t: "prop", p: 5500, g: "#2E8B63" },
+  { n: "台北故宫", t: "prop", p: 6000, g: "#2E8B63" },
+  { n: "国际机场", t: "airport" },
+  { n: "北京CBD", t: "prop", p: 6500, g: "#2E8B63" },
+  { n: "税务局", t: "tax", amt: 2000 },
+  { n: "台北101", t: "prop", p: 7000, g: "#D4A017" },
+  { n: "上海中心大厦", t: "prop", p: 7500, g: "#D4A017" },
   { n: "运气", t: "chance" },
-  { n: "北京CBD", t: "prop", p: 6000, g: "#2E8B63" },
+  { n: "三亚海滩度假村", t: "prop", p: 8000, g: "#D4A017" },
+  { n: "故宫博物院", t: "prop", p: 10000, g: "#C0392B" },
 ];
 const CHANCES = [
   { txt: "🎉 彩票中奖,获得 ¥3000", d: 3000 },
@@ -41,10 +49,18 @@ const CHANCES = [
   { txt: "🚗 违章停车,罚款 ¥600", d: -600 },
   { txt: "🪙 路边捡到金币 ¥888", d: 888 },
   { txt: "👜 钱包被偷,损失 ¥1000", d: -1000 },
+  { txt: "🎰 赌场赢钱 ¥2000", d: 2000 },
+  { txt: "💼 获得年终奖金 ¥3800", d: 3800 },
+  { txt: "🏥 生病住院,花费 ¥1500", d: -1500 },
+  { txt: "🎓 拿到AI培训证书,政府补贴 ¥1800", d: 1800 },
+  { txt: "⚡ 家中电器短路,维修费 ¥700", d: -700 },
+  { txt: "🛒 超市大促销省了 ¥500", d: 500 },
+  { txt: "💎 投资NFT赚了一笔 ¥4200", d: 4200 },
+  { txt: "🌪️ 台风灾害,房屋维修 ¥2500", d: -2500 },
 ];
-const START_MONEY = 15000;
+const START_MONEY = 18000;
 const GO_BONUS = 2000;
-const DECIDE_TIMEOUT = 25_000;   // 买地/升级 决策超时(毫秒)
+const DECIDE_TIMEOUT = 30_000;   // 买地/升级 决策超时(毫秒)
 const ROOM_TTL = 30 * 60_000;    // 空房间保留时间
 
 const rentOf = (tile, lv) => Math.round(tile.p * 0.3 * lv);
@@ -299,7 +315,7 @@ io.on("connection", (socket) => {
     const steps = d1 + d2;
     const path = [];
     let pos = p.pos;
-    for (let i = 0; i < steps; i++) { pos = (pos + 1) % 24; path.push(pos); }
+    for (let i = 0; i < steps; i++) { pos = (pos + 1) % 32; path.push(pos); }
 
     io.to("room:" + room.code).emit("dice", { playerId: p.id, d1, d2, path });
 
@@ -311,7 +327,7 @@ io.on("connection", (socket) => {
     log(room, `🎲 ${p.name} 掷出 ${d1}+${d2},来到「${TILES[pos].n}」`);
 
     // 等客户端走完动画再揭晓结果(骰子 0.8s + 每步 0.23s)
-    setTimeout(() => resolveTile(room, p), 900 + steps * 230);
+    setTimeout(() => resolveTile(room, p), 1100 + steps * 280);
   });
 
   socket.on("decide", ({ yes }) => {

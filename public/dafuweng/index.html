@@ -54,18 +54,18 @@
   .board-outer{padding:10px;border-radius:22px;flex-shrink:0;
     background:linear-gradient(160deg,#5C3A1E,#3D2512);
     box-shadow:0 26px 60px rgba(0,0,0,.5), inset 0 0 0 2px rgba(227,178,91,.5)}
-  #board{position:relative;width:min(92vw,620px);height:min(92vw,620px);
-    display:grid;grid-template:repeat(7,1fr)/repeat(7,1fr);gap:3px;
+  #board{position:relative;width:min(95vw,680px);height:min(95vw,680px);
+    display:grid;grid-template:repeat(9,1fr)/repeat(9,1fr);gap:2px;
     background:var(--felt);border-radius:14px;padding:3px}
   .tile{position:relative;border-radius:7px;overflow:hidden;display:flex;flex-direction:column;
     justify-content:center;align-items:center;text-align:center;padding:3px 2px;
     background:var(--cream);color:var(--ink);box-shadow:inset 0 0 0 1px rgba(120,90,40,.25)}
   .tile.corner{background:linear-gradient(160deg,var(--lacquer),var(--lacquer-lo));color:var(--cream)}
   .tile .bar{position:absolute;top:0;left:0;right:0;height:7px}
-  .tile .nm{font-weight:700;line-height:1.25;font-size:10.5px}
-  .tile.corner .nm{font-size:13px}
-  .tile .pr{font-size:9.5px;margin-top:2px;color:#8A6A3B;font-weight:700;letter-spacing:.5px}
-  #center{grid-row:2/7;grid-column:2/7;border-radius:12px;
+  .tile .nm{font-weight:700;line-height:1.2;font-size:9px}
+  .tile.corner .nm{font-size:11px}
+  .tile .pr{font-size:8px;margin-top:1px;color:#8A6A3B;font-weight:700;letter-spacing:.3px}
+  #center{grid-row:2/9;grid-column:2/9;border-radius:12px;
     background:radial-gradient(closest-side,var(--felt-in),#143229);
     box-shadow:inset 0 0 0 1px rgba(227,178,91,.35), inset 0 0 50px rgba(0,0,0,.35);
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;text-align:center}
@@ -77,9 +77,9 @@
     box-shadow:0 6px 14px rgba(0,0,0,.4), inset 0 1px 0 #fff}
   .die i{border-radius:50%;margin:1px}
   #centerInfo{margin-top:8px;font-size:14px}
-  .token{position:absolute;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;
+  .token{position:absolute;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;
     justify-content:center;font-size:17px;transform:translate(-50%,-50%);
-    transition:left .22s ease, top .22s ease;box-shadow:0 4px 10px rgba(0,0,0,.45);z-index:5}
+    transition:left .3s cubic-bezier(.4,0,.2,1), top .3s cubic-bezier(.4,0,.2,1);box-shadow:0 4px 10px rgba(0,0,0,.45);z-index:5}
   .token.cur{outline:2px solid #FFF1C9;z-index:6}
 
   /* ---- 侧栏 ---- */
@@ -190,23 +190,27 @@
 <script>
 /* ================= 数据 ================= */
 const TILES = [
-  {n:"起点",t:"go"},{n:"老北京胡同",t:"prop",p:1200,g:"#C8503C"},{n:"运气",t:"chance"},
-  {n:"上海弄堂",t:"prop",p:1400,g:"#C8503C"},{n:"税务局",t:"tax",amt:1500},{n:"广州骑楼",t:"prop",p:1600,g:"#C8503C"},
-  {n:"监狱",t:"jail"},{n:"成都茶馆",t:"prop",p:2000,g:"#3D7EA6"},{n:"运气",t:"chance"},
-  {n:"重庆山城",t:"prop",p:2200,g:"#3D7EA6"},{n:"杭州西湖",t:"prop",p:2400,g:"#3D7EA6"},{n:"苏州园林",t:"prop",p:2600,g:"#3D7EA6"},
-  {n:"免费停车",t:"park"},{n:"西安城墙",t:"prop",p:2800,g:"#8E6CB8"},{n:"运气",t:"chance"},
-  {n:"南京夫子庙",t:"prop",p:3000,g:"#8E6CB8"},{n:"青岛海岸",t:"prop",p:3200,g:"#8E6CB8"},{n:"厦门鼓浪屿",t:"prop",p:3400,g:"#8E6CB8"},
-  {n:"国际机场",t:"airport"},{n:"深圳科技园",t:"prop",p:4000,g:"#2E8B63"},{n:"税务局",t:"tax",amt:2000},
-  {n:"香港中环",t:"prop",p:5000,g:"#2E8B63"},{n:"运气",t:"chance"},{n:"北京CBD",t:"prop",p:6000,g:"#2E8B63"},
+  {n:"起点",t:"go"},{n:"老北京胡同",t:"prop",p:600,g:"#C8503C"},{n:"运气",t:"chance"},
+  {n:"上海外滩",t:"prop",p:800,g:"#C8503C"},{n:"广州塔",t:"prop",p:1000,g:"#C8503C"},{n:"意外支出",t:"tax",amt:800},
+  {n:"成都锦里",t:"prop",p:1400,g:"#FF8C42"},{n:"西安兵马俑",t:"prop",p:1600,g:"#FF8C42"},
+  {n:"监狱",t:"jail"},{n:"重庆洪崖洞",t:"prop",p:2000,g:"#FF8C42"},{n:"杭州西湖",t:"prop",p:2200,g:"#3D7EA6"},
+  {n:"运气",t:"chance"},{n:"苏州园林",t:"prop",p:2400,g:"#3D7EA6"},{n:"南京夫子庙",t:"prop",p:2600,g:"#3D7EA6"},
+  {n:"长沙橘子洲",t:"prop",p:2800,g:"#3D7EA6"},{n:"武汉黄鹤楼",t:"prop",p:3000,g:"#3D7EA6"},
+  {n:"免费停车",t:"park"},{n:"厦门鼓浪屿",t:"prop",p:3200,g:"#8E6CB8"},{n:"青岛栈桥",t:"prop",p:3400,g:"#8E6CB8"},
+  {n:"运气",t:"chance"},{n:"深圳科技园",t:"prop",p:4000,g:"#8E6CB8"},{n:"香港中环",t:"prop",p:5000,g:"#2E8B63"},
+  {n:"澳门大三巴",t:"prop",p:5500,g:"#2E8B63"},{n:"台北故宫",t:"prop",p:6000,g:"#2E8B63"},
+  {n:"国际机场",t:"airport"},{n:"北京CBD",t:"prop",p:6500,g:"#2E8B63"},{n:"税务局",t:"tax",amt:2000},
+  {n:"台北101",t:"prop",p:7000,g:"#D4A017"},{n:"上海中心大厦",t:"prop",p:7500,g:"#D4A017"},
+  {n:"运气",t:"chance"},{n:"三亚海滩度假村",t:"prop",p:8000,g:"#D4A017"},{n:"故宫博物院",t:"prop",p:10000,g:"#C0392B"},
 ];
 const EMO = {go:"🚩",jail:"🚔",park:"🅿️",airport:"✈️",chance:"🎴",tax:"🧾"};
 const ICONS = ["🪙","🏮","🐉","🧧"];
 const PCOLORS = ["#E3B25B","#D96A4A","#5FA8A0","#B86FA8"];
 const fmt = n => "¥" + n.toLocaleString("zh-CN");
 function idxToRC(i){
-  if(i===0)return[6,6]; if(i<=5)return[6,6-i]; if(i===6)return[6,0];
-  if(i<=11)return[6-(i-6),0]; if(i===12)return[0,0]; if(i<=17)return[0,i-12];
-  if(i===18)return[0,6]; return[i-18,6];
+  if(i===0)return[8,8]; if(i<=7)return[8,8-i]; if(i===8)return[8,0];
+  if(i<=15)return[8-(i-8),0]; if(i===16)return[0,0]; if(i<=23)return[0,i-16];
+  if(i===24)return[0,8]; return[i-24,8];
 }
 
 /* ================= 音频 ================= */
@@ -261,7 +265,7 @@ const board=$("board"), musicBtn=$("musicBtn");
 /* ---- 建棋盘骨架(一次) ---- */
 const tileEls=[];
 (function(){
-  for(let i=0;i<24;i++){
+  for(let i=0;i<32;i++){
     const t=TILES[i],[r,c]=idxToRC(i);
     const d=document.createElement("div");
     d.className="tile"+(["go","jail","park","airport"].includes(t.t)?" corner":"");
@@ -295,7 +299,9 @@ function renderDice(a,b,shaking){
 const tokenEls={};
 function tokenPos(el,pos,idx){
   const[r,c]=idxToRC(pos);
-  el.style.left=`calc(${(c+0.5)/7*100}% + ${(idx%2)*16-8}px)`;
+  el.style.left=`calc(${(c+0.5)/9*100}% + ${(idx%2)*16-8}px)`;
+  el.style.top=`calc(${(r+0.5)/9*100}% + ${idx>1?14:-6}px)`;
+}% + ${(idx%2)*16-8}px)`;
   el.style.top=`calc(${(r+0.5)/7*100}% + ${idx>1?14:-6}px)`;
 }
 function syncTokens(){
@@ -323,16 +329,27 @@ function render(){
     const own=ST.owners[i];
     if(TILES[i].t==="prop"){
       const pr=el.querySelector("[data-pr]");
+      el.style.transition="background .35s ease, box-shadow .35s ease";
       if(own){
         const oi=ST.players.findIndex(p=>p.id===own.pid);
-        el.style.boxShadow=`inset 0 0 0 2px ${PCOLORS[oi%4]}`;
+        const pc=PCOLORS[oi%4];
+        el.style.boxShadow=`inset 0 0 0 3px ${pc}, 0 0 12px ${pc}44`;
+        el.style.background=`linear-gradient(170deg, ${pc}22, var(--cream))`;
+        el.classList.add("owned");
+        el.style.borderLeft=`5px solid ${pc}`;
         pr.textContent="★".repeat(own.lv);
       }else{
         el.style.boxShadow="inset 0 0 0 1px rgba(120,90,40,.25)";
+        el.style.background="var(--cream)";
+        el.classList.remove("owned");
+        el.style.borderLeft="";
         pr.textContent=fmt(TILES[i].p);
       }
+    }else{
+      el.classList.remove("owned");
+      el.style.borderLeft="";
     }
-  });
+  }
   // 玩家卡
   $("players").innerHTML=ST.players.map((p,i)=>{
     const props=Object.values(ST.owners).filter(o=>o.pid===p.id).length;
@@ -418,22 +435,23 @@ socket.on("dice",async({playerId,d1,d2,path})=>{
   if(AC)sfx.dice();
   // 骰子摇晃
   const shake=setInterval(()=>renderDice(1+(Math.random()*6|0),1+(Math.random()*6|0),true),80);
-  await sleep(750);clearInterval(shake);renderDice(d1,d2,false);
-  // 逐格走子
-  const idx=ST?ST.players.findIndex(p=>p.id===playerId):0;
+  await sleep(800);clearInterval(shake);renderDice(d1,d2,false);
+  // 逐格走子 - 更平滑
+  const pl=ST?ST.players:[];const idx=pl.findIndex(p=>p.id===playerId);
   const el=tokenEls[playerId];
-  for(const pos of path){
-    if(el)tokenPos(el,pos,idx);
-    if(pos===0&&AC)sfx.coin();
-    await sleep(230);
+  for(let s=0;s<path.length;s++){
+    if(el)tokenPos(el,path[s],idx);
+    if(path[s]===0&&AC)sfx.coin();
+    await sleep(300);
   }
+  await sleep(80);
   animating=false;render();
 });
 socket.on("teleport",({playerId,pos})=>{
-  const idx=ST?ST.players.findIndex(p=>p.id===playerId):0;
+  const pl=ST?ST.players:[];const idx=pl.findIndex(p=>p.id===playerId);
   const el=tokenEls[playerId];
-  if(el)tokenPos(el,pos,idx);
-});
+  if(el){tokenPos(el,pos,idx);el.style.transition="left .15s ease, top .15s ease";}
+}
 
 let askDeadline=0,askTicker=null;
 socket.on("ask",a=>{

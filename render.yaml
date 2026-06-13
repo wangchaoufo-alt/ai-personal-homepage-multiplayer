@@ -12,9 +12,9 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: DATABASE_PATH
-        value: /var/data/forum.json
+        value: ./data/forum.json
       - key: NEWS_CACHE_PATH
-        value: /var/data/ai-news.json
+        value: ./data/ai-news.json
       - key: NEWS_REFRESH_INTERVAL_MS
         value: "86400000"
       - key: NEWS_TRANSLATION_ENABLED
@@ -22,12 +22,8 @@ services:
       - key: TRANSLATION_TIMEOUT_MS
         value: "12000"
       - key: LCZ_FORUM_CACHE_PATH
-        value: /var/data/lcz-forum.json
+        value: ./data/lcz-forum.json
       - key: LCZ_FORUM_REFRESH_INTERVAL_MS
         value: "3600000"
       - key: LCZ_FORUM_TIMEOUT_MS
         value: "12000"
-    disk:
-      name: forum-data
-      mountPath: /var/data
-      sizeGB: 1

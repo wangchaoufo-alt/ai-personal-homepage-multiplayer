@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
@@ -54,17 +54,21 @@
   .board-outer{padding:10px;border-radius:22px;flex-shrink:0;
     background:linear-gradient(160deg,#5C3A1E,#3D2512);
     box-shadow:0 26px 60px rgba(0,0,0,.5), inset 0 0 0 2px rgba(227,178,91,.5)}
- #board{position:relative;width:min(95vw,680px);height:min(95vw,680px);display:grid;grid-template:repeat(9,1fr)/repeat(9,1fr);gap:2px;background:var(--felt);border-radius:14px;padding:3px}
- .tile{position:relative;border-radius:7px;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:3px 2px;background:var(--cream);color:var(--ink);box-shadow:inset 0 0 0 1px rgba(120,90,40,.25);z-index:2}
- .tile.corner{background:linear-gradient(160deg,var(--lacquer),var(--lacquer-lo));color:var(--cream)}
- .tile .bar{position:absolute;top:0;left:0;right:0;height:7px}
- .tile .nm{font-weight:700;line-height:1.2;font-size:9px}
- .tile.corner .nm{font-size:11px}
- .tile .pr{font-size:8px;margin-top:1px;color:#8A6A3B;font-weight:700;letter-spacing:.3px}
-  #center{grid-row:2/8;grid-column:2/8;border-radius:16px;
-   background:radial-gradient(closest-side,var(--felt-in),#143229);
-   box-shadow:inset 0 0 0 1px rgba(227,178,91,.35), inset 0 0 50px rgba(0,0,0,.35);
-   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;text-align:center}
+  #board{position:relative;width:min(95vw,680px);height:min(95vw,680px);
+    display:grid;grid-template:repeat(9,1fr)/repeat(9,1fr);gap:2px;
+    background:var(--felt);border-radius:14px;padding:3px}
+  .tile{position:relative;border-radius:7px;overflow:hidden;display:flex;flex-direction:column;
+    justify-content:center;align-items:center;text-align:center;padding:3px 2px;
+    background:var(--cream);color:var(--ink);box-shadow:inset 0 0 0 1px rgba(120,90,40,.25)}
+  .tile.corner{background:linear-gradient(160deg,var(--lacquer),var(--lacquer-lo));color:var(--cream)}
+  .tile .bar{position:absolute;top:0;left:0;right:0;height:7px}
+  .tile .nm{font-weight:700;line-height:1.2;font-size:9px}
+  .tile.corner .nm{font-size:11px}
+  .tile .pr{font-size:8px;margin-top:1px;color:#8A6A3B;font-weight:700;letter-spacing:.3px}
+  #center{grid-row:2/9;grid-column:2/9;border-radius:12px;
+    background:radial-gradient(closest-side,var(--felt-in),#143229);
+    box-shadow:inset 0 0 0 1px rgba(227,178,91,.35), inset 0 0 50px rgba(0,0,0,.35);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;text-align:center}
   #center .title{font-size:clamp(34px,7vw,52px);letter-spacing:10px;color:var(--gold);text-shadow:0 3px 14px rgba(227,178,91,.4)}
   #center .sub{font-size:12px;letter-spacing:8px;color:var(--mist);margin-top:-4px}
   #diceRow{display:flex;gap:14px;margin:10px 0 2px}
@@ -96,9 +100,8 @@
   #log div{font-size:12.5px;line-height:1.8;color:#D8CFBA;border-bottom:1px dashed rgba(159,184,173,.12)}
   .chatrow{display:flex;gap:8px}
   .chatrow input{flex:1;padding:9px 14px;font-size:13px}
-  .chatrow button{padding:9px 16px;font-size:13px}
-  .btn-exit{background:rgba(200,60,60,.15);border:1px solid rgba(200,60,60,.35);color:#E8A0A0;border-radius:99px;padding:3px 9px;font-size:11px}
   .btn-rule{background:rgba(227,178,91,.15);border:1px solid rgba(227,178,91,.4);color:var(--gold);border-radius:99px;padding:3px 9px;font-size:11px}
+  .btn-exit{background:rgba(200,60,60,.15);border:1px solid rgba(200,60,60,.35);color:#E8A0A0;border-radius:99px;padding:3px 9px;font-size:11px}  .chatrow button{padding:9px 16px;font-size:13px}
 
   /* ---- 弹窗 / 提示 ---- */
   #mask{position:fixed;inset:0;background:rgba(5,15,12,.65);display:none;align-items:center;
@@ -114,15 +117,14 @@
   #toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);z-index:60;display:none;
     background:linear-gradient(160deg,var(--gold-hi),var(--gold-lo));color:#4A2E08;font-weight:700;
     padding:12px 22px;border-radius:99px;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.4);max-width:86vw}
-  #rulesMask{position:fixed;inset:0;background:rgba(5,15,12,.7);display:none;align-items:center;justify-content:center;z-index:55;backdrop-filter:blur(4px)}
+    #rulesMask{position:fixed;inset:0;background:rgba(5,15,12,.7);display:none;align-items:center;justify-content:center;z-index:55;backdrop-filter:blur(4px)}
   #rulesBox{width:min(88vw,400px);max-height:80vh;overflow-y:auto;background:linear-gradient(170deg,#FBF4E4,#EFE3CB);border-radius:18px;padding:22px 20px;color:var(--ink);box-shadow:0 30px 70px rgba(0,0,0,.5)}
   #rulesBox h2{margin:0 0 4px;font-size:22px;font-weight:700;letter-spacing:2px;text-align:center}
   #rulesBox .sub{font-size:12px;color:#7A6A50;text-align:center;margin-bottom:12px}
   #rulesBox .sec{margin:8px 0;padding:8px 10px;background:rgba(255,255,255,.45);border-radius:10px}
   #rulesBox .sec b{display:block;font-size:13px;color:#5C4B33;margin-bottom:3px}
   #rulesBox .sec p{margin:0;font-size:12.5px;line-height:1.7;color:#4A3B28}
-  #rulesBox .close{display:block;margin:14px auto 4px;padding:8px 24px;background:var(--gold-lo);color:#4A2E08;font-weight:700;border:none;border-radius:99px;font-size:14px;cursor:pointer}
-  #net{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:70;display:none;
+  #rulesBox .close{display:block;margin:14px auto 4px;padding:8px 24px;background:var(--gold-lo);color:#4A2E08;font-weight:700;border:none;border-radius:99px;font-size:14px;cursor:pointer}#net{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:70;display:none;
     background:#7E1F22;color:#FBE9E9;font-size:12.5px;padding:7px 18px;border-radius:99px}
 
   @keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-14deg) translateY(-3px)}50%{transform:rotate(10deg)}75%{transform:rotate(-8deg) translateY(-2px)}}
@@ -189,7 +191,6 @@
   <div class="sec"><b>🏆 胜负</b><p>当一方资金为负时即破产出局，名下地产全部释放。最后存活者为胜。</p></div>
   <button class="close" onclick="closeRules()">知道了</button>
 </div></div>
-
 <!-- 买地/升级弹窗 -->
 <div id="mask"><div id="modal">
   <div class="bar" id="mBar"></div>
@@ -204,76 +205,121 @@
 <div id="toast"></div>
 <div id="net">🔌 连接中断,正在重连…</div>
 
-<script src="/socket.io/socket.io.js"></script><script>/* ================= 棋盘数据 ================= */
+<script src="/socket.io/socket.io.js"></script>
+<script>
+/* ================= 数据 ================= */
 const TILES = [
-  {id:0,type:"jail"},{id:1,type:"empty"},{id:2,type:"empty"},{id:3,type:"empty"},
-  {id:4,type:"coin",v:666},{id:5,type:"shop"},{id:6,type:"empty"},{id:7,type:"jail"},
-  {id:8,type:"coin",v:1111},{id:9,type:"empty"},{id:10,type:"coin",v:666},{id:11,type:"magic"},
-  {id:12,type:"coin",v:666},{id:13,type:"empty"},{id:14,type:"coin",v:1111},{id:15,type:"empty"},
-  {id:16,type:"empty"},{id:17,type:"empty"},{id:18,type:"shop"},{id:19,type:"magic"},
-  {id:20,type:"coin",v:666},{id:21,type:"coin",v:666},{id:22,type:"shop"},{id:23,type:"magic"},
-  {id:24,type:"coin",v:3333},{id:25,type:"hospital"},{id:26,type:"shop"},{id:27,type:"magic"},
-  {id:28,type:"coin",v:666},{id:29,type:"coin",v:1111},
+  {n:"起点",t:"go"},{n:"老北京胡同",t:"prop",p:600,g:"#C8503C"},{n:"运气",t:"chance"},
+  {n:"上海外滩",t:"prop",p:800,g:"#C8503C"},{n:"广州塔",t:"prop",p:1000,g:"#C8503C"},{n:"意外支出",t:"tax",amt:800},
+  {n:"成都锦里",t:"prop",p:1400,g:"#FF8C42"},{n:"西安兵马俑",t:"prop",p:1600,g:"#FF8C42"},
+  {n:"监狱",t:"jail"},{n:"重庆洪崖洞",t:"prop",p:2000,g:"#FF8C42"},{n:"杭州西湖",t:"prop",p:2200,g:"#3D7EA6"},
+  {n:"运气",t:"chance"},{n:"苏州园林",t:"prop",p:2400,g:"#3D7EA6"},{n:"南京夫子庙",t:"prop",p:2600,g:"#3D7EA6"},
+  {n:"长沙橘子洲",t:"prop",p:2800,g:"#3D7EA6"},{n:"武汉黄鹤楼",t:"prop",p:3000,g:"#3D7EA6"},
+  {n:"免费停车",t:"park"},{n:"厦门鼓浪屿",t:"prop",p:3200,g:"#8E6CB8"},{n:"青岛栈桥",t:"prop",p:3400,g:"#8E6CB8"},
+  {n:"运气",t:"chance"},{n:"深圳科技园",t:"prop",p:4000,g:"#8E6CB8"},{n:"香港中环",t:"prop",p:5000,g:"#2E8B63"},
+  {n:"澳门大三巴",t:"prop",p:5500,g:"#2E8B63"},{n:"台北故宫",t:"prop",p:6000,g:"#2E8B63"},
+  {n:"国际机场",t:"airport"},{n:"北京CBD",t:"prop",p:6500,g:"#2E8B63"},{n:"税务局",t:"tax",amt:2000},
+  {n:"台北101",t:"prop",p:7000,g:"#D4A017"},{n:"上海中心大厦",t:"prop",p:7500,g:"#D4A017"},
+  {n:"运气",t:"chance"},{n:"三亚海滩度假村",t:"prop",p:8000,g:"#D4A017"},{n:"故宫博物院",t:"prop",p:10000,g:"#C0392B"},
 ];
-const LOOP = TILES.map(t=>t.id);
-const TILE_GRID = [
-  [0,0],[0,1],[0,2],[0,3],[0,5],[0,6],[0,7],[0,8],
-  [2,8],[3,8],[6,8],[7,8],[7,7],[7,5],[7,4],[7,3],
-  [7,2],[7,1],[7,0],[5,0],[3,0],[1,3],[2,2],[4,2],
-  [5,2],[6,4],[6,7],[2,5],[2,6],[4,6],
-];
-const TILE_UI = {jail:{emoji:"🚔",c:"#8A8A8A"},empty:{emoji:"",c:"#F4EAD6"},shop:{emoji:"🏪",c:"#4CAF50"},
-  magic:{emoji:"🎩",c:"#9C27B0"},coin:{emoji:"🪙",c:"#FFD700"},hospital:{emoji:"🏥",c:"#E53935"}};
-const fmt = n => "¥"+n.toLocaleString("zh-CN");
+const EMO = {go:"🚩",jail:"🚔",park:"🅿️",airport:"✈️",chance:"🎴",tax:"🧾"};
 const ICONS = ["🪙","🏮","🐉","🧧"];
 const PCOLORS = ["#E3B25B","#D96A4A","#5FA8A0","#B86FA8"];
+const fmt = n => "¥" + n.toLocaleString("zh-CN");
+function idxToRC(i){
+  if(i===0)return[8,8]; if(i<=7)return[8,8-i]; if(i===8)return[8,0];
+  if(i<=15)return[8-(i-8),0]; if(i===16)return[0,0]; if(i<=23)return[0,i-16];
+  if(i===24)return[0,8]; return[i-24,8];
+}
 
 /* ================= 音频 ================= */
-let AC=null,master=null,bgmTimer=null,bgmStep=0,bgmNext=0;
+let AC=null, master=null, bgmTimer=null, bgmStep=0, bgmNext=0;
 const F={C3:130.81,F3:174.61,G3:196,A3:220,C4:261.63,E4:329.63,G4:392,A4:440,C5:523.25,D5:587.33,E5:659.25,G5:783.99,A5:880};
 const MELODY=["E5","G5","A5","G5","E5","D5","C5","D5","E5","G5","E5","D5","C5","A4","G4","A4","C5","C5","D5","E5","G5","E5","D5","C5","D5","E5","D5","C5","A4","C5","D5","C5"];
-const BASS=["C3","G3","A3","G3","F3","G3","C3","G3"];const STEP=0.27;
-function ensureAC(){if(!AC){AC=new(window.AudioContext||window.webkitAudioContext)();master=AC.createGain();master.gain.value=0.22;master.connect(AC.destination);}AC.resume();}
-function tone(f,t,d,type,v){const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(v,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(master);o.start(t);o.stop(t+d+.05);}
-function startBGM(){ensureAC();if(bgmTimer)return;bgmStep=0;bgmNext=AC.currentTime+0.1;bgmTimer=setInterval(()=>{while(bgmNext<AC.currentTime+0.35){tone(F[MELODY[bgmStep%32]],bgmNext,STEP*0.95,"triangle",0.5);if(bgmStep%4===0)tone(F[BASS[(bgmStep/4)%8]],bgmNext,STEP*3.4,"sine",0.45);if(bgmStep%2===1)tone(F[MELODY[bgmStep%32]]*2,bgmNext,STEP*0.4,"sine",0.08);bgmStep++;bgmNext+=STEP;}},60);}
+const BASS=["C3","G3","A3","G3","F3","G3","C3","G3"];
+const STEP=0.27;
+function ensureAC(){
+  if(!AC){AC=new (window.AudioContext||window.webkitAudioContext)();
+    master=AC.createGain();master.gain.value=0.22;master.connect(AC.destination);}
+  AC.resume();
+}
+function tone(f,t,d,type,v){
+  const o=AC.createOscillator(),g=AC.createGain();
+  o.type=type;o.frequency.value=f;
+  g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(v,t+.02);
+  g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  o.connect(g);g.connect(master);o.start(t);o.stop(t+d+.05);
+}
+function startBGM(){
+  ensureAC(); if(bgmTimer)return;
+  bgmStep=0; bgmNext=AC.currentTime+0.1;
+  bgmTimer=setInterval(()=>{
+    while(bgmNext<AC.currentTime+0.35){
+      tone(F[MELODY[bgmStep%32]],bgmNext,STEP*0.95,"triangle",0.5);
+      if(bgmStep%4===0)tone(F[BASS[(bgmStep/4)%8]],bgmNext,STEP*3.4,"sine",0.45);
+      if(bgmStep%2===1)tone(F[MELODY[bgmStep%32]]*2,bgmNext,STEP*0.4,"sine",0.08);
+      bgmStep++;bgmNext+=STEP;
+    }
+  },60);
+}
 function stopBGM(){clearInterval(bgmTimer);bgmTimer=null;}
-function toggleMusic(){if(bgmTimer){stopBGM();musicBtn.textContent="🔇 音乐关";}else{startBGM();musicBtn.textContent="🔊 音乐开";}}
-const sfx={dice(){ensureAC();const t=AC.currentTime;for(let i=0;i<6;i++)tone(180+Math.random()*500,t+i*0.07,0.06,"square",0.18);},coin(){ensureAC();const t=AC.currentTime;tone(F.A5,t,0.1,"sine",0.5);tone(F.E5*2,t+0.09,0.18,"sine",0.4);},buy(){ensureAC();const t=AC.currentTime;[F.C4,F.E4,F.G4,F.C5].forEach((f,i)=>tone(f,t+i*0.06,0.35,"triangle",0.4));},bad(){ensureAC();const t=AC.currentTime;tone(F.A3,t,0.25,"sawtooth",0.18);tone(F.F3,t+0.18,0.4,"sawtooth",0.18);}};
+function toggleMusic(){
+  if(bgmTimer){stopBGM();musicBtn.textContent="🔇 音乐关";}
+  else{startBGM();musicBtn.textContent="🔊 音乐开";}
+}
+const sfx = {
+  dice(){ensureAC();const t=AC.currentTime;for(let i=0;i<6;i++)tone(180+Math.random()*500,t+i*0.07,0.06,"square",0.18);},
+  coin(){ensureAC();const t=AC.currentTime;tone(F.A5,t,0.1,"sine",0.5);tone(F.E5*2,t+0.09,0.18,"sine",0.4);},
+  buy(){ensureAC();const t=AC.currentTime;[F.C4,F.E4,F.G4,F.C5].forEach((f,i)=>tone(f,t+i*0.06,0.35,"triangle",0.4));},
+  bad(){ensureAC();const t=AC.currentTime;tone(F.A3,t,0.25,"sawtooth",0.18);tone(F.F3,t+0.18,0.4,"sawtooth",0.18);},
+};
 
 /* ================= 全局状态 ================= */
-const socket=io();let ST=null,myId=null,myToken=null,code=null,animating=false;
-const $=id=>document.getElementById(id);const board=$("board"),musicBtn=$("musicBtn");
-const tileEls=[],tokenEls={};
+const socket = io();
+let ST=null, myId=null, myToken=null, code=null;
+let animating=false; // 走子动画期间冻结棋子位置覆盖
+const $=id=>document.getElementById(id);
+const board=$("board"), musicBtn=$("musicBtn");
 
-/* ---- 建棋盘 ---- */
+/* ---- 建棋盘骨架(一次) ---- */
+const tileEls=[];
 (function(){
-  for(let i=0;i<30;i++){
-    const t=TILES[i],[r,c]=TILE_GRID[i];
+  for(let i=0;i<32;i++){
+    const t=TILES[i],[r,c]=idxToRC(i);
     const d=document.createElement("div");
-    d.className="tile"+(t.type==="jail"||t.type==="hospital"?" corner":"");
-    d.style.gridRow=r+1;d.style.gridColumn=c+1;
-    let inner="";
-    if(t.type==="coin"){d.style.borderTop="4px solid #FFD700";inner='<div class="nm">🪙</div><div class="pr">'+fmt(t.v)+'</div>';}
-    else if(t.type==="shop")inner='<div class="nm">🏪</div>';
-    else if(t.type==="magic")inner='<div class="nm">🎩</div>';
-    else if(t.type==="hospital")inner='<div class="nm">🏥</div>';
-    else if(t.type==="jail")inner='<div class="nm">🚔</div>';
-    else inner='<div class="nm">⬜</div>';
-    d.innerHTML=inner;board.appendChild(d);tileEls.push(d);
+    d.className="tile"+(["go","jail","park","airport"].includes(t.t)?" corner":"");
+    d.style.gridRow=r+1; d.style.gridColumn=c+1;
+    d.innerHTML=(t.t==="prop"?`<div class="bar" style="background:${t.g}"></div>`:"")+
+      `<div class="nm kai">${EMO[t.t]||""}${t.n}</div>`+
+      (t.t==="prop"?`<div class="pr" data-pr>${fmt(t.p)}</div>`:t.t==="tax"?`<div class="pr">${fmt(t.amt)}</div>`:"");
+    board.appendChild(d); tileEls.push(d);
   }
-  const c=document.createElement("div");c.id="center";
-  c.innerHTML='<div class="title kai">大富翁</div><div class="sub">财源滚滚</div><div id="diceRow"></div><div id="centerInfo"></div>';
-  board.appendChild(c);renderDice(1,1,false);
+  const c=document.createElement("div");
+  c.id="center";
+  c.innerHTML=`<div class="title kai">大富翁</div><div class="sub">财源滚滚</div>
+    <div id="diceRow"></div><div id="centerInfo"></div>`;
+  board.appendChild(c);
+  renderDice(1,1,false);
 })();
 
-function dieHTML(n){const dots={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]}[n];const col=(n===1||n===4)?"#C0392B":"#2B2B2B";let s="";for(let i=0;i<9;i++)s+='<i style="background:'+(dots.includes(i)?col:"transparent")+'"></i>';return s;}
-function renderDice(a,b,shaking){$("diceRow").innerHTML='<div class="die '+(shaking?"shake":"")+'">'+dieHTML(a)+'</div><div class="die '+(shaking?"shake":"")+'">'+dieHTML(b)+'</div>';}
+function dieHTML(n){
+  const dots={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]}[n];
+  const col=(n===1||n===4)?"#C0392B":"#2B2B2B";
+  let s="";
+  for(let i=0;i<9;i++)s+=`<i style="background:${dots.includes(i)?col:"transparent"}"></i>`;
+  return s;
+}
+function renderDice(a,b,shaking){
+  $("diceRow").innerHTML=`<div class="die ${shaking?"shake":""}">${dieHTML(a)}</div>
+    <div class="die ${shaking?"shake":""}">${dieHTML(b)}</div>`;
+}
 
 /* ---- 棋子 ---- */
-function tokenPos(el,tileIdx,idx){
-  const g=TILE_GRID[tileIdx];if(!g)return;
-  el.style.left="calc("+((g[1]+0.5)/9*100)+"% + "+((idx%2)*14-7)+"px)";
-  el.style.top="calc("+((g[0]+0.5)/9*100)+"% + "+(idx>1?12:-5)+"px)";
+const tokenEls={};
+function tokenPos(el,pos,idx){
+  const[r,c]=idxToRC(pos);
+  el.style.left=`calc(${(c+0.5)/9*100}% + ${(idx%2)*16-8}px)`;
+  el.style.top=`calc(${(r+0.5)/9*100}% + ${idx>1?14:-6}px)`;
 }
 function syncTokens(){
   if(!ST)return;
@@ -282,94 +328,186 @@ function syncTokens(){
     if(p.bankrupt){if(el){el.remove();delete tokenEls[p.id];}return;}
     if(!el){
       el=document.createElement("div");el.className="token";el.textContent=ICONS[i%4];
-      el.style.background="radial-gradient(circle at 35% 30%, #fff3, transparent), "+PCOLORS[i%4];
-      board.appendChild(el);tokenEls[p.id]=el;
+      el.style.background=`radial-gradient(circle at 35% 30%, #fff3, transparent), ${PCOLORS[i%4]}`;
+      board.appendChild(el);tokenEls[p.id]=el;tokenPos(el,p.pos,i);
     }
-    el.classList.toggle("cur",ST.turn!==void 0&&ST.players[ST.turn]?.id===p.id);
-    if(!animating)tokenPos(el,p.pos||0,i);
+    el.classList.toggle("cur",ST.status==="playing"&&ST.players[ST.turn]?.id===p.id);
+    if(!animating)tokenPos(el,p.pos,i);
   });
 }
 
-/* ---- 渲染 ---- */
+/* ---- 渲染整体状态 ---- */
 function render(){
   if(!ST)return;
-  $("roomCode").textContent=ST.code||"";
+  $("roomCode").textContent=ST.code;
+  // 地块归属
+  ST.players.forEach(()=>{});
   tileEls.forEach((el,i)=>{
-    if(!TILES[i]||TILES[i].type!=="coin")return;
-    const own=ST.owners&&ST.owners[i];
-    if(own){
-      const pc=PCOLORS[own.pid%4];
-      el.style.boxShadow="inset 0 0 0 3px "+pc+", 0 0 12px "+pc+"44";
-      el.style.background="linear-gradient(170deg, "+pc+"22, var(--cream))";
-      el.querySelector(".pr").textContent="★".repeat(own.lv||1);
+    const own=ST.owners[i];
+    if(TILES[i].t==="prop"){
+      const pr=el.querySelector("[data-pr]");
+      el.style.transition="background .35s ease, box-shadow .35s ease";
+      if(own){
+        const oi=ST.players.findIndex(p=>p.id===own.pid);
+        const pc=PCOLORS[oi%4];
+        el.style.boxShadow=`inset 0 0 0 3px ${pc}, 0 0 12px ${pc}44`;
+        el.style.background=`linear-gradient(170deg, ${pc}22, var(--cream))`;
+        el.classList.add("owned");
+        el.style.borderLeft=`5px solid ${pc}`;
+        pr.textContent="★".repeat(own.lv);
+      }else{
+        el.style.boxShadow="inset 0 0 0 1px rgba(120,90,40,.25)";
+        el.style.background="var(--cream)";
+        el.classList.remove("owned");
+        el.style.borderLeft="";
+        pr.textContent=fmt(TILES[i].p);
+      }
     }else{
-      el.style.boxShadow="inset 0 0 0 1px rgba(120,90,40,.25)";
-      el.style.background="var(--cream)";
-      const pr=el.querySelector(".pr");
-      if(pr)pr.textContent=fmt(TILES[i].v);
+      el.classList.remove("owned");
+      el.style.borderLeft="";
     }
   });
-  $("players").innerHTML=(ST.players||[]).map((p,i)=>{
-    const ring=ST.turn!==void 0&&i===ST.turn?"box-shadow:0 0 0 2px "+PCOLORS[i%4]+",0 6px 18px rgba(0,0,0,.35);":"";
-    return '<div class="pcard" style="opacity:'+(p.bankrupt?0.4:1)+";"+ring+'"><div class="ico" style="background:'+PCOLORS[i%4]+'">'+ICONS[i%4]+'</div><div style="flex:1;min-width:0"><div class="nm">'+esc(p.name||"")+(p.id===myId?" (我)":"")+(p.jailed?" 🚔":"")+'</div><div class="money">'+(p.bankrupt?"已破产":fmt(p.money||0))+'</div></div></div>';
+  // 玩家卡
+  $("players").innerHTML=ST.players.map((p,i)=>{
+    const props=Object.values(ST.owners).filter(o=>o.pid===p.id).length;
+    const ring=ST.status==="playing"&&i===ST.turn?`box-shadow:0 0 0 2px ${PCOLORS[i%4]},0 6px 18px rgba(0,0,0,.35);`:"";
+    return `<div class="pcard" style="opacity:${p.bankrupt?0.4:1};${ring}">
+      <div class="ico" style="background:${PCOLORS[i%4]}">${ICONS[i%4]}</div>
+      <div style="flex:1;min-width:0">
+        <div class="nm">${esc(p.name)}${p.id===myId?" (我)":""}${p.id===ST.hostId?" 👑":""}${p.jailed?" 🚔":""}${p.online?"":" 🔌"}</div>
+        <div class="money" style="${p.bankrupt?"color:#999":""}">${p.bankrupt?"已破产":fmt(p.money)}</div>
+      </div>
+      <div class="props">${props} 处地产</div></div>`;
   }).join("");
-  const info=$("centerInfo"),cur=ST.players&&ST.players[ST.turn],me=ST.players&&ST.players.find(p=>p.id===myId);
+  // 中央区
+  const info=$("centerInfo");
+  const me=ST.players.find(p=>p.id===myId);
+  const cur=ST.players[ST.turn];
   if(ST.status==="lobby"){
-    info.innerHTML='房间号 <b style="color:var(--gold);font-size:26px;letter-spacing:4px">'+(ST.code||"")+'</b><div style="opacity:.85;margin-top:4px;font-size:12px">等待好友加入('+(ST.players?ST.players.length:0)+'/4)</div>'+(ST.hostId===myId?'<button class="btn-gold" style="margin-top:10px;padding:10px 26px" onclick="socket.emit(\'start\')">开始游戏</button>':'<div style="margin-top:10px;font-size:12px;opacity:.8">等房主开局…</div>');
+    info.innerHTML=`房间号 <b style="color:var(--gold);font-size:26px;letter-spacing:4px">${ST.code}</b>
+      <div style="opacity:.85;margin-top:4px;font-size:12px">等待好友加入(${ST.players.length}/4)</div>`+
+      (ST.hostId===myId
+        ?`<button class="btn-gold" style="margin-top:10px;padding:10px 26px" onclick="socket.emit('start')">开始游戏</button>`
+        :`<div style="margin-top:10px;font-size:12px;opacity:.8">等房主开局…</div>`);
   }else if(ST.status==="playing"){
     const myTurn=cur&&cur.id===myId&&me&&!me.bankrupt;
-    if(myTurn&&me.jailed)info.innerHTML='<button class="btn-jade" style="padding:10px 26px" onclick="socket.emit(\'skipJail\')">服刑中 · 跳过回合</button>';
-    else if(myTurn&&!ST.pending&&!animating)info.innerHTML='<button class="btn-gold pulse" style="padding:12px 30px;font-size:17px" onclick="emitRoll()">🎲 掷骰子</button>';
-    else info.innerHTML='<div>等待 <b style="color:'+PCOLORS[(ST.turn||0)%4]+'">'+esc(cur&&cur.name||"")+'</b> 行动…</div>';
+    if(myTurn&&me.jailed)
+      info.innerHTML=`<button class="btn-jade" style="padding:10px 26px" onclick="socket.emit('skipJail')">服刑中 · 跳过回合</button>`;
+    else if(myTurn&&!ST.pending&&!animating)
+      info.innerHTML=`<button class="btn-gold pulse" style="padding:12px 30px;font-size:17px" onclick="emitRoll()">🎲 掷骰子</button>`;
+    else if(ST.pending)
+      info.innerHTML=`<div>等 <b style="color:${PCOLORS[ST.turn%4]}">${esc(cur.name)}</b> 做决定…</div>`;
+    else
+      info.innerHTML=`<div>等待 <b style="color:${PCOLORS[ST.turn%4]}">${esc(cur?cur.name:"")}</b> 行动…</div>`;
   }else{
-    info.innerHTML='<div style="font-size:22px">👑 '+esc(ST.winner||"")+' 获胜!</div><button class="btn-ghost" style="margin-top:10px" onclick="location.reload()">再来一局</button>';
+    info.innerHTML=`<div style="font-size:22px">👑 ${esc(ST.winner||"")} 获胜!</div>
+      <button class="btn-ghost" style="margin-top:10px" onclick="location.reload()">再来一局</button>`;
   }
-  $("log").innerHTML=(ST.log||[]).map((l,i)=>'<div style="opacity:'+Math.max(.45,1-i*.05)+'">'+esc(l)+'</div>').join("");
   $("forceBtn").style.display=(ST.status==="playing"&&ST.hostId===myId&&cur&&cur.id!==myId)?"block":"none";
+  $("log").innerHTML=ST.log.map((l,i)=>`<div style="opacity:${Math.max(.45,1-i*.05)}">${esc(l)}</div>`).join("");
   syncTokens();
 }
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
 
 /* ---- 提示 ---- */
 let toastTimer=null;
-function showToast(txt){const t=$("toast");t.textContent=txt;t.style.display="block";t.classList.remove("toastIn");void t.offsetWidth;t.classList.add("toastIn");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.style.display="none",2800);}
+function showToast(txt){
+  const t=$("toast");t.textContent=txt;t.style.display="block";t.classList.remove("toastIn");
+  void t.offsetWidth;t.classList.add("toastIn");
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.style.display="none",2800);
+}
 
-/* ================= 联机 ================= */
-function enterGame(res){myId=res.playerId;myToken=res.token;code=res.code;ST=res.state;localStorage.setItem("dfw",JSON.stringify({code,token:myToken}));$("home").style.display="none";$("game").style.display="block";render();}
-function createRoom(){const n=$("nameIn").value.trim();if(!n)return $("err").textContent="先取个昵称吧";socket.emit("create",{name:n},r=>r.ok?enterGame(r):$("err").textContent=r.err);}
-function joinRoom(){const n=$("nameIn").value.trim(),c=$("codeIn").value.trim();if(!n)return $("err").textContent="先取个昵称吧";if(!/^\d{4}$/.test(c))return $("err").textContent="房间号是4位数字";socket.emit("join",{code:c,name:n},r=>r.ok?enterGame(r):$("err").textContent=r.err);}
+/* ================= 联机事件 ================= */
+function enterGame(res){
+  myId=res.playerId;myToken=res.token;code=res.code;ST=res.state;
+  localStorage.setItem("dfw",JSON.stringify({code,token:myToken,name:$("nameIn").value.trim()}));
+  $("home").style.display="none";$("game").style.display="block";
+  render();
+}
+function createRoom(){
+  const name=$("nameIn").value.trim();
+  if(!name)return $("err").textContent="先取个昵称吧";
+  socket.emit("create",{name},res=>res.ok?enterGame(res):$("err").textContent=res.err);
+}
+function joinRoom(){
+  const name=$("nameIn").value.trim(),c=$("codeIn").value.trim();
+  if(!name)return $("err").textContent="先取个昵称吧";
+  if(!/^\d{4}$/.test(c))return $("err").textContent="房间号是 4 位数字";
+  socket.emit("join",{code:c,name},res=>res.ok?enterGame(res):$("err").textContent=res.err);
+}
 function emitRoll(){socket.emit("roll");}
 function emitForce(){socket.emit("forceNext");}
-function sendChat(){const v=$("chatIn").value.trim();if(v){socket.emit("chat",v);$("chatIn").value="";}}
+function sendChat(){
+  const v=$("chatIn").value.trim();
+  if(v){socket.emit("chat",v);$("chatIn").value="";}
+}
 $("chatIn").addEventListener("keydown",e=>{if(e.key==="Enter")sendChat();});
 $("codeIn").addEventListener("input",e=>e.target.value=e.target.value.replace(/\D/g,""));
 
 socket.on("state",s=>{ST=s;render();});
 socket.on("toast",showToast);
 
-socket.on("dice",async({playerId,d1,d2,pathTiles})=>{
+socket.on("dice",async({playerId,d1,d2,path})=>{
   animating=true;
   if(AC)sfx.dice();
+  // 骰子摇晃
   const shake=setInterval(()=>renderDice(1+(Math.random()*6|0),1+(Math.random()*6|0),true),80);
   await sleep(800);clearInterval(shake);renderDice(d1,d2,false);
-  const idx=ST.players.findIndex(p=>p.id===playerId);
+  // 逐格走子 - 更平滑
+  const pl=ST?ST.players:[];const idx=pl.findIndex(p=>p.id===playerId);
   const el=tokenEls[playerId];
-  for(let s=0;s<pathTiles.length;s++){
-    if(el)tokenPos(el,pathTiles[s],idx);
+  for(let s=0;s<path.length;s++){
+    if(el)tokenPos(el,path[s],idx);
+    if(path[s]===0&&AC)sfx.coin();
     await sleep(300);
   }
   await sleep(80);
   animating=false;render();
 });
+socket.on("teleport",({playerId,pos})=>{
+  const pl=ST?ST.players:[];const idx=pl.findIndex(p=>p.id===playerId);
+  const el=tokenEls[playerId];
+  if(el){tokenPos(el,pos,idx);el.style.transition="left .15s ease, top .15s ease";}
+});
 
+let askDeadline=0,askTicker=null;
+socket.on("ask",a=>{
+  $("mBar").style.background=a.color||"var(--lacquer)";
+  $("mTitle").textContent=a.name;
+  $("mYes").textContent=a.type==="buy"?"买下":"升级";
+  askDeadline=Date.now()+a.timeout;
+  const body=()=>{
+    const sec=Math.max(0,Math.ceil((askDeadline-Date.now())/1000));
+    $("mBody").innerHTML=a.type==="buy"
+      ?`售价 <b style="color:var(--lacquer)">${fmt(a.price)}</b><br>租金 ${fmt(a.rent)} 起,可升 4 级<br><span style="font-size:12px;color:#998557">${sec} 秒后自动放弃</span>`
+      :`升级到 Lv${a.nextLv},费用 <b style="color:var(--lacquer)">${fmt(a.price)}</b><br>升级后租金 ${fmt(a.rent)}<br><span style="font-size:12px;color:#998557">${sec} 秒后自动放弃</span>`;
+  };
+  body();clearInterval(askTicker);askTicker=setInterval(body,1000);
+  $("mask").style.display="flex";
+});
+function decide(yes){
+  clearInterval(askTicker);
+  $("mask").style.display="none";
+  socket.emit("decide",{yes});
+  if(yes&&AC)sfx.buy();
+}
+
+/* ---- 断线重连 ---- */
 socket.on("disconnect",()=>{if(code)$("net").style.display="block";});
 socket.on("connect",()=>{
   $("net").style.display="none";
   const saved=localStorage.getItem("dfw");
-  if(code&&myToken)socket.emit("rejoin",{code,token:myToken},r=>{if(r.ok){ST=r.state;render();}});
-  else if(saved){try{const{code:c,token}=JSON.parse(saved);socket.emit("rejoin",{code:c,token},r=>{if(r.ok){myId=r.playerId;myToken=r.token;code=r.code;ST=r.state;$("home").style.display="none";$("game").style.display="block";render();}});}catch(e){}}
+  if(code&&myToken){
+    socket.emit("rejoin",{code,token:myToken},res=>{if(res.ok){ST=res.state;render();}});
+  }else if(saved){
+    try{
+      const{code:c,token,name}=JSON.parse(saved);
+      if(name)$("nameIn").value=name;
+      socket.emit("rejoin",{code:c,token},res=>{if(res.ok){myId=res.playerId;myToken=res.token;code=res.code;ST=res.state;
+        $("home").style.display="none";$("game").style.display="block";render();}});
+    }catch(e){}
+  }
 });
-
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 
 /* ---- 游戏规则 / 退出 ---- */
@@ -378,7 +516,3 @@ function closeRules(){document.getElementById("rulesMask").style.display="none";
 function exitRoom(){if(confirm("确定退出当前房间？")){socket.disconnect();localStorage.removeItem("dfw");location.reload();}}</script>
 </body>
 </html>
-  .btn-exit{background:rgba(200,60,60,.2);border:1px solid rgba(200,60,60,.4);color:#E8A0A0;
-    border-radius:99px;padding:4px 10px;font-size:11px}
-  .btn-rule{background:rgba(227,178,91,.15);border:1px solid rgba(227,178,91,.4);color:var(--gold);
-    border-radius:99px;padding:4px 10px;font-size:11px}

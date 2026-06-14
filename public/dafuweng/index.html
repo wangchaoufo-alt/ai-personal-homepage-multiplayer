@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
@@ -392,9 +392,9 @@ function render(){
   }else if(ST.status==="playing"){
     const myTurn=cur&&cur.id===myId&&me&&!me.bankrupt;
     if(myTurn&&me.jailed)
-      info.innerHTML=`<button class="btn-jade" style="padding:10px 26px" onclick="socket.emit('skipJail')">服刑中 · 跳过回合</button>`;
+      info.innerHTML=`<button class="btn-jade" style="padding:10px 26px" onclick="socket.emit('skipJail')">服刑中 · 跳过回合</button><div style="font-size:12px;opacity:.7;margin-top:4px" id="cd">⏰ 5秒后自动跳过</div>`;
     else if(myTurn&&!ST.pending&&!animating)
-      info.innerHTML=`<button class="btn-gold pulse" style="padding:12px 30px;font-size:17px" onclick="emitRoll()">🎲 掷骰子</button>`;
+      info.innerHTML=`<button class="btn-gold pulse" style="padding:12px 30px;font-size:17px" onclick="emitRoll()">🎲 掷骰子</button><div style="font-size:12px;opacity:.7;margin-top:4px" id="cd">⏰ 10秒后自动投骰</div>`;
     else if(ST.pending)
       info.innerHTML=`<div>等 <b style="color:${PCOLORS[ST.turn%4]}">${esc(cur.name)}</b> 做决定…</div>`;
     else
@@ -509,6 +509,15 @@ socket.on("connect",()=>{
   }
 });
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+/* ---- 倒计时更新 ---- */
+setInterval(function(){
+  var cd=document.getElementById("cd");
+  if(cd&&ST&&ST.turnDeadline){
+    var sec=Math.max(0,Math.ceil((ST.turnDeadline-Date.now())/1000));
+    cd.textContent="⏰ "+sec+"秒"+(ST.players[ST.turn]&&ST.players[ST.turn].jailed?"后自动跳过":"后自动投骰");
+    if(sec<=0)cd.textContent="⏰ ...";
+  }
+},500);
 
 /* ---- 游戏规则 / 退出 ---- */
 function showRules(){document.getElementById("rulesMask").style.display="flex";}

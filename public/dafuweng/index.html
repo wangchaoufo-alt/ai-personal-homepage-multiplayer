@@ -476,6 +476,8 @@ socket.on("ask",a=>{
   $("mTitle").textContent=a.name;
   $("mYes").textContent=a.type==="buy"?"买下":"升级";
   askDeadline=Date.now()+a.timeout;
+    // 通知render弹窗已显示
+    window._askShown=true;
   const body=()=>{
     const sec=Math.max(0,Math.ceil((askDeadline-Date.now())/1000));
     $("mBody").innerHTML=a.type==="buy"

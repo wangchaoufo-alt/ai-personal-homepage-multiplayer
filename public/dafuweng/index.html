@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
@@ -329,10 +329,10 @@ function syncTokens(){
     if(!el){
       el=document.createElement("div");el.className="token";el.textContent=ICONS[i%4];
       el.style.background=`radial-gradient(circle at 35% 30%, #fff3, transparent), ${PCOLORS[i%4]}`;
-      board.appendChild(el);tokenEls[p.id]=el;tokenPos(el,p.pos,i);
+      board.appendChild(el);tokenEls[p.id]=el;el._pos=p.pos;tokenPos(el,p.pos,i);
     }
     el.classList.toggle("cur",ST.status==="playing"&&ST.players[ST.turn]?.id===p.id);
-    if(!animating)tokenPos(el,p.pos,i);
+    if(!animating&&el._pos!==p.pos){tokenPos(el,p.pos,i);el._pos=p.pos;}
   });
 }
 
@@ -457,7 +457,7 @@ socket.on("dice",async({playerId,d1,d2,path})=>{
   const pl=ST?ST.players:[];const idx=pl.findIndex(p=>p.id===playerId);
   const el=tokenEls[playerId];
   for(let s=0;s<path.length;s++){
-    if(el)tokenPos(el,path[s],idx);
+    if(el){tokenPos(el,path[s],idx);el._pos=path[s];}
     if(path[s]===0&&AC)sfx.coin();
     await sleep(300);
   }

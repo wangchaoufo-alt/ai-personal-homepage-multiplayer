@@ -462,7 +462,7 @@ socket.on("dice",async({playerId,d1,d2,path})=>{
     await sleep(300);
   }
   await sleep(80);
-  animating=false;render();
+  animating=false;
 });
 socket.on("teleport",({playerId,pos})=>{
   const pl=ST?ST.players:[];const idx=pl.findIndex(p=>p.id===playerId);

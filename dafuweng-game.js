@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
  * 大富翁 · 联机服务器
  * Node.js >= 18  |  Express + Socket.IO
  * 启动: node server.js   (默认端口 3000, 可用环境变量 PORT 修改)
@@ -90,6 +90,7 @@ function publicState(room) {
     code: room.code, hostId: room.hostId, status: room.status,
     turn: room.turn, winner: room.winner || null,
     pending: room.pending ? { playerId: room.pending.playerId, type: room.pending.type, tileIdx: room.pending.tileIdx } : null,
+    turnDeadline: room.turnDeadline || null,
     players: room.players.map((p) => ({
       id: p.id, name: p.name, online: p.online,
       money: p.money, pos: p.pos, jailed: p.jailed, bankrupt: p.bankrupt,
@@ -120,6 +121,7 @@ function advanceTurn(room) {
   let t = room.turn;
   do { t = (t + 1) % room.players.length; } while (room.players[t].bankrupt);
   room.turn = t;
+  startTurnTimer(room);
 }
 
 function pay(room, player, amount, toPlayer) {
